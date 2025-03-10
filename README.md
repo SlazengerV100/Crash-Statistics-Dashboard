@@ -1,93 +1,97 @@
-# Team 3 Assignment 1 
+# Team 3 - Assignment 1 Project
 
+## Change Log
+- **Group Project Due:** 23:59 Friday 11 April 2025  
+- **Weight:** 40%  
+- **Submission System:** [ECS Submission](https://apps.ecs.vuw.ac.nz/submit/SWEN422)  
+- **Extensions:** See notes on Slip Days and Extensions.  
 
+## Submission Details
 
-## Getting started
+| Assessment Component        | Weighting | Due Date | Submission Link |
+|-----------------------------|-----------|-----------|----------------|
+| Individual Final Report    | 25%       | 23:59 Friday 11 April 2025 | Individual_Final_Report |
+| Group Project Code         | 15%       | 23:59 Friday 11 April 2025 | Group_Project_GitLab |
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 1. Introduction  
+Assignment 1 is worth **40% of the overall course grade** and involves implementing an **information visualization software prototype** using **D3 or Unity**. This group project consists of two main deliverables:  
+- **25%** - Individual report on the visualization design, implementation, and critique.  
+- **15%** - Group project assessed on the quality of the visualization, codebase, and accompanying video.
 
-## Add your files
+The project is expected to take approximately **40 hours per individual**.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+---
 
-```
-cd existing_repo
-git remote add origin https://gitlab.ecs.vuw.ac.nz/course-work/swen422/2025/assignment1/team3/team-3-assignment-1.git
-git branch -M main
-git push -uf origin main
-```
+## 2. Goals  
+The primary goal of this assignment is to design and implement a software system for **information visualization** that allows a user to **interactively explore a dataset**. The visualization system should help users identify **trends and patterns** and must include at least **three visualizations**.
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](https://gitlab.ecs.vuw.ac.nz/course-work/swen422/2025/assignment1/team3/team-3-assignment-1/-/settings/integrations)
+## 3. Data  
+The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** and approved by **Craig Anslow**. The dataset attribution should be included in the **codebase and individual reports**.
 
-## Collaborate with your team
+### Possible Datasets
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+| Title | Link |
+|-------|------|
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## 4. Visualization System  
+- The system should be implemented using **D3.js** ([d3js.org](https://d3js.org/)) or **Unity** ([unity.com](https://unity.com/)).  
+- **Unreal Engine** ([unrealengine.com](https://www.unrealengine.com/)) is permitted for VR development.  
+- **PowerBI and Tableau are NOT allowed** for implementation but can be used for prototyping.  
+- Additional external libraries are permitted, but assessment is based on what is added to the design and implementation.  
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+The visualization system will be indirectly assessed through the **final report and project video**.
 
-***
+---
 
-# Editing this README
+## 6. Assignment Timeline  
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+| Week  | Task |
+|-------|------|
+| **1 & 2** | Attend lectures on InfoVis techniques, submit team formation. |
+| **3** | Meet team, select dataset, experiment with D3/Unity, create paper prototypes, set up GitLab issues. |
+| **4** | Develop designs using **Figma** or another tool. |
+| **5-6** | Implement and test visualizations, draft individual reports. |
+| **7** | Finalize reports, create project video, submit final deliverables. |
 
-## Suggestions for a good README
+---
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 7. Grading  
 
-## Name
-Choose a self-explaining name for your project.
+### 7.1 Team Project Code - Group Grade (15%)  
+The group will receive an overall grade based on:  
+- **Visualizations (60%)**  
+- **Code Base (20%)**  
+- **Project Video (20%)**  
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Each group must submit a **video demonstration** (YouTube/Vimeo link) showcasing the project.  
+🚫 **Do not commit the video file to GitLab.**
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+---
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### 7.2 Individual Final Report - Individual Grade (25%)  
+Each member submits a **2,500-3,000 word report** covering:  
+- **Key design/implementation decisions**  
+- **Justifications & alternative designs**  
+- **Critique of visualizations and tools (D3, Unity, Unreal, frameworks used, etc.)**  
+- **Use of citations and references from course readings**  
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+#### Report Formatting  
+- **Filename:** `SWEN422-Assignment-1-final-username.pdf`  
+- **Length:** Max **3,500 words** (excluding images, tables, and references)  
+- **Submission:** **PDF only** via the ECS online submission system  
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Individual Grade Breakdown  
+| Component | Weighting |
+|-----------|----------|
+| Written Communication | 25% |
+| Key Design Decisions | 25% |
+| Justifications & Alternative Designs | 25% |
+| Visualization & Development Tools Critique | 25% |
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+---
