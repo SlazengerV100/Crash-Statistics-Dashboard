@@ -36,6 +36,7 @@ The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** a
 
 | Title | Link |
 |-------|------|
+|Police Stolen Vehicle Database| [Link](https://catalogue.data.govt.nz/dataset/police-stolen-vehicle-database)|
 
 ---
 
