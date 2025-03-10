@@ -8,10 +8,10 @@
 
 ## Submission Details
 
-| Assessment Component        | Weighting | Due Date | Submission Link |
-|-----------------------------|-----------|-----------|----------------|
-| Individual Final Report    | 25%       | 23:59 Friday 11 April 2025 | Individual_Final_Report |
-| Group Project Code         | 15%       | 23:59 Friday 11 April 2025 | Group_Project_GitLab |
+| Assessment Component        | Weighting | Due Date |
+|-----------------------------|-----------|-----------|
+| Individual Final Report    | 25%       | 23:59 Friday 11 April 2025 |
+| Group Project Code         | 15%       | 23:59 Friday 11 April 2025 |
 
 ---
 
