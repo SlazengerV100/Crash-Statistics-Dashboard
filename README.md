@@ -38,6 +38,9 @@ The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** a
 |-------|------|
 |Police Stolen Vehicle Database| [Link](https://catalogue.data.govt.nz/dataset/police-stolen-vehicle-database)|
 |Key graphs - employment|[Link](https://catalogue.data.govt.nz/dataset/key-graphs-employment)|
+|Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/economic-indicators)|
+|Wholesale Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/wholesale-interest-rates)|
+|Speed Limit Data|[Link](Key graphs - employment|[Link](https://catalogue.data.govt.nz/dataset/key-graphs-employment))|
 
 ---
 
