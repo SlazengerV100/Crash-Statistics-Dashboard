@@ -40,7 +40,7 @@ The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** a
 |Key graphs - employment|[Link](https://catalogue.data.govt.nz/dataset/key-graphs-employment)|
 |Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/economic-indicators)|
 |Wholesale Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/wholesale-interest-rates)|
-|Speed Limit Data|[Link](https://catalogue.data.govt.nz/dataset/key-graphs-employment))|
+|Speed Limit Data|[Link](https://catalogue.data.govt.nz/dataset/national-speed-limit-register-nslr1)|
 
 ---
 
