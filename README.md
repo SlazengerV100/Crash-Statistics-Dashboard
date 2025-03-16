@@ -40,10 +40,8 @@ The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** a
 ---
 
 ## 4. Visualization System  
-- The system should be implemented using **D3.js** ([d3js.org](https://d3js.org/)) or **Unity** ([unity.com](https://unity.com/)).  
-- **Unreal Engine** ([unrealengine.com](https://www.unrealengine.com/)) is permitted for VR development.  
-- **PowerBI and Tableau are NOT allowed** for implementation but can be used for prototyping.  
-- Additional external libraries are permitted, but assessment is based on what is added to the design and implementation.  
+- The prototypes for our designs will be created with **Figma** [SWEN422 A1 Prototypes](https://www.figma.com/design/181flhWNbnQZYzVdjHhDSP/SWEN422-A1-Prototypes?node-id=0-1&t=geMkkD2KuGIUkiin-1)
+- The system should will implemented using **D3.js** ([d3js.org](https://d3js.org/))
 
 The visualization system will be indirectly assessed through the **final report and project video**.
 
