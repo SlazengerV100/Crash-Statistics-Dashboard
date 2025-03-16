@@ -32,15 +32,10 @@ The primary goal of this assignment is to design and implement a software system
 ## 3. Data  
 The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** and approved by **Craig Anslow**. The dataset attribution should be included in the **codebase and individual reports**.
 
-### Possible Datasets
+###  Dataset:
 
-| Title | Link |
-|-------|------|
-|Police Stolen Vehicle Database| [Link](https://catalogue.data.govt.nz/dataset/police-stolen-vehicle-database)|
-|Key graphs - employment|[Link](https://catalogue.data.govt.nz/dataset/key-graphs-employment)|
-|Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/economic-indicators)|
-|Wholesale Economic Indicators|[Link](https://catalogue.data.govt.nz/dataset/wholesale-interest-rates)|
-|Speed Limit Data|[Link](https://catalogue.data.govt.nz/dataset/national-speed-limit-register-nslr1)|
+[NZ Crash Analysis System](https://opendata-nzta.opendata.arcgis.com/datasets/8d684f1841fa4dbea6afaefc8a1ba0fc_0/explore?location=-39.509339%2C176.882313%2C14.05)
+
 
 ---
 
