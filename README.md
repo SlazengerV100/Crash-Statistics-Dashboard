@@ -24,24 +24,17 @@ The project is expected to take approximately **40 hours per individual**.
 
 ---
 
-## 2. Goals  
-The primary goal of this assignment is to design and implement a software system for **information visualization** that allows a user to **interactively explore a dataset**. The visualization system should help users identify **trends and patterns** and must include at least **three visualizations**.
-
----
-
-## 3. Data  
-The dataset must be sourced from **[data.govt.nz](https://www.data.govt.nz/)** and approved by **Craig Anslow**. The dataset attribution should be included in the **codebase and individual reports**.
-
-###  Dataset:
+## 2. Dataset:
 
 [NZ Crash Analysis System](https://opendata-nzta.opendata.arcgis.com/datasets/8d684f1841fa4dbea6afaefc8a1ba0fc_0/explore?location=-39.509339%2C176.882313%2C14.05)
 
 
 ---
 
-## 4. Visualization System  
+## 3. Development Tools 
 - The prototypes for our designs will be created with **Figma** [SWEN422 A1 Prototypes](https://www.figma.com/design/181flhWNbnQZYzVdjHhDSP/SWEN422-A1-Prototypes?node-id=0-1&t=geMkkD2KuGIUkiin-1)
-- The system should will implemented using **D3.js** ([d3js.org](https://d3js.org/))
+- The visual system will implemented using **D3.js** ([d3js.org](https://d3js.org/))
+- We will use **React** as the front end framwork 
 
 The visualization system will be indirectly assessed through the **final report and project video**.
 
@@ -53,7 +46,7 @@ The visualization system will be indirectly assessed through the **final report 
 |-------|------|
 | **1 & 2** | Attend lectures on InfoVis techniques, submit team formation. |
 | **3** | Meet team, select dataset, experiment with D3/Unity, create paper prototypes, set up GitLab issues. |
-| **4** | Develop designs using **Figma** or another tool. |
+| **4** | Create personas, create use cases, create paper prototypes, develop designs using **Figma**. |
 | **5-6** | Implement and test visualizations, draft individual reports. |
 | **7** | Finalize reports, create project video, submit final deliverables. |
 
@@ -78,6 +71,14 @@ Each member submits a **2,500-3,000 word report** covering:
 - **Justifications & alternative designs**  
 - **Critique of visualizations and tools (D3, Unity, Unreal, frameworks used, etc.)**  
 - **Use of citations and references from course readings**  
+
+#### Prerequisites for report'
+| Report must include | Action Required |
+|---------------------|-----------------|
+|Justification of design choices like the use of visual variable | Read the readings and do research to come up with design choices that can be backed up |
+| Discussion of alternative designs | Do more Figma prototypes for designs than number of designs we will implement and also we need to sit down and justify why we chose the ones we did |
+| Critique of our final design| Keep a log of critiques and failures of our design with justifications to refer back to for report |
+| Critique of the development tools | Keep a log of critiques of decvelopement tools to refer back to for report |
 
 #### Report Formatting  
 - **Filename:** `SWEN422-Assignment-1-final-username.pdf`  
