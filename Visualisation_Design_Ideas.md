@@ -101,7 +101,32 @@ Breakdown by region provides a way for users to focus on specific areas and unde
 ----
 ## Kahu
 ### Title: 
+Interactive Bar chart breakdown by region
 
 ### Descripton: 
+make use of a geo map which outlines the different regions within New Zealand. Upon hovering over a region, the bar chart
+will display quick, easily digestible statistical information (average crashes/fatalities per year, ratio of minor/medium and severe crashes)
+breakdowns. Upon clicking on a region, this will add the region to their selection. Users can add multiple selections to compare.
+
+A user can click a play button, which will play a ~20 sec visualisation on a bar chart showing the changes in crash
+statistics compared to the other regions in their selected regions.
+
+This "simulation" will allow users to see how the crash statistics have changed over time in their selected regions, allowing them to pause,
+rewind, and fast-forward to see the changes in statistics. (should add an option to swap to normalised data vs raw data)
+
+### Justification of design:
+- **Interactive Elements**: The use of a map and bar chart allows for a more interactive experience, allowing users to quickly compare regions and see how they stack up against each other.
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where the regions are in relation to each other.
+- **Transparency & Layering**: The use of a play button allows for a more dynamic experience, allowing users to see how the data changes over time.
+
+### Title:
+
+### Descripton:
+
+### Justification of design: 
+
+### Title:
+
+### Descripton:
 
 ### Justification of design: 
