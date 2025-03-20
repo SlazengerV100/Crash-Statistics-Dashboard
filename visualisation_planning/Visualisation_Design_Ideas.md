@@ -119,14 +119,31 @@ rewind, and fast-forward to see the changes in statistics. (should add an option
 - **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where the regions are in relation to each other.
 - **Transparency & Layering**: The use of a play button allows for a more dynamic experience, allowing users to see how the data changes over time.
 
-### Title:
+### Title: Region crash location overview
+Continuing on, a user can double click on a region fro the map above, this will zoom in to a overview of the region, showing a more detailed version
+which will still look like a map and will show the locations of the crashes. the user can also so the same thing and play a simulation
+of crashes over time, with color indications of the severity of the crashes.
+
 
 ### Descripton:
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where the regions are in relation to each other.
+- **Transparency & Layering**: The use of a play button allows for a more dynamic experience, allowing users to see how the data changes over time.
+- **Interactive Elements**: Use of time bar to show the changes in crash statistics over time, allowing users to see how the data changes over time.
 
 ### Justification of design: 
+- **Interactive Elements**: The use of a map and bar chart allows for a more interactive experience, allowing users to quickly compare regions and see how they stack up against each other.
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where diffrent crashes happen.
 
 ### Title:
+Crash Risk Factors Breakdown
 
 ### Descripton:
+This visualization will use either a Bubble Chart or a Parallel Coordinates Plot to analyze the 
+key factors contributing to crashes and their severity. The goal is to uncover patterns in crash 
+causes, such as road conditions, weather, time of day, and vehicle type.
 
-### Justification of design: 
+### Justification of design:
+- **Multivariate Analysis:** Allows users to explore multiple crash factors at once and identify high-risk conditions.
+- **Visual Encoding:** Bubble size and color make it easy to see which factors contribute the most to crashes.
+- **Interactivity:** Users can filter by region, time, vehicle type, or weather conditions to customize their analysis.
+- **Temporal Insights:** A timeline slider helps track how crash risk factors change over time.
