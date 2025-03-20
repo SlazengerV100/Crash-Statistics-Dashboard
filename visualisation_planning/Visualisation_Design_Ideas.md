@@ -101,7 +101,49 @@ Breakdown by region provides a way for users to focus on specific areas and unde
 ----
 ## Kahu
 ### Title: 
+Interactive Bar chart breakdown by region
 
 ### Descripton: 
+make use of a geo map which outlines the different regions within New Zealand. Upon hovering over a region, the bar chart
+will display quick, easily digestible statistical information (average crashes/fatalities per year, ratio of minor/medium and severe crashes)
+breakdowns. Upon clicking on a region, this will add the region to their selection. Users can add multiple selections to compare.
+
+A user can click a play button, which will play a ~20 sec visualisation on a bar chart showing the changes in crash
+statistics compared to the other regions in their selected regions.
+
+This "simulation" will allow users to see how the crash statistics have changed over time in their selected regions, allowing them to pause,
+rewind, and fast-forward to see the changes in statistics. (should add an option to swap to normalised data vs raw data)
+
+### Justification of design:
+- **Interactive Elements**: The use of a map and bar chart allows for a more interactive experience, allowing users to quickly compare regions and see how they stack up against each other.
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where the regions are in relation to each other.
+- **Transparency & Layering**: The use of a play button allows for a more dynamic experience, allowing users to see how the data changes over time.
+
+### Title: Region crash location overview
+Continuing on, a user can double click on a region fro the map above, this will zoom in to a overview of the region, showing a more detailed version
+which will still look like a map and will show the locations of the crashes. the user can also so the same thing and play a simulation
+of crashes over time, with color indications of the severity of the crashes.
+
+
+### Descripton:
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where the regions are in relation to each other.
+- **Transparency & Layering**: The use of a play button allows for a more dynamic experience, allowing users to see how the data changes over time.
+- **Interactive Elements**: Use of time bar to show the changes in crash statistics over time, allowing users to see how the data changes over time.
 
 ### Justification of design: 
+- **Interactive Elements**: The use of a map and bar chart allows for a more interactive experience, allowing users to quickly compare regions and see how they stack up against each other.
+- **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where diffrent crashes happen.
+
+### Title:
+Crash Risk Factors Breakdown
+
+### Descripton:
+This visualization will use either a Bubble Chart or a Parallel Coordinates Plot to analyze the 
+key factors contributing to crashes and their severity. The goal is to uncover patterns in crash 
+causes, such as road conditions, weather, time of day, and vehicle type.
+
+### Justification of design:
+- **Multivariate Analysis:** Allows users to explore multiple crash factors at once and identify high-risk conditions.
+- **Visual Encoding:** Bubble size and color make it easy to see which factors contribute the most to crashes.
+- **Interactivity:** Users can filter by region, time, vehicle type, or weather conditions to customize their analysis.
+- **Temporal Insights:** A timeline slider helps track how crash risk factors change over time.
