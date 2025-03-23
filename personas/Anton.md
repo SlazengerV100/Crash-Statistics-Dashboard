@@ -54,3 +54,10 @@ Anton Marcus is a dedicated civil engineer with a strong focus on road safety an
 Anton values function over form—he believes that the best designs are the ones that work seamlessly, even if they aren't visually striking. He has little patience for unnecessary embellishments, whether in infrastructure or software interfaces. His ideal project is one that improves safety and efficiency in the most straightforward way possible.
 
 Now working in Christchurch for Downer, Anton is involved in designing safer intersections, optimizing traffic light sequences, and reducing pedestrian risk zones. He takes pride in finding simple yet effective engineering solutions that can make roads safer for everyone. When he's not working, he enjoys long drives through New Zealand’s scenic highways, constantly critiquing road designs as he goes.
+
+## Use Cases
+**Use Case 1: Identify High-Risk Locations and Trends**  
+Anton can use the system to pinpoint road segments or intersections with high crash frequencies. By filtering data based on crash numbers, vehicle types, speed, and weather conditions, he can quickly identify hazardous zones in Christchurch. This clear, no-nonsense visualization supports his goal of finding practical engineering solutions to improve road safety.
+
+**Use Case 2: Analyse the Impact of Speed and Weather on Crash Severity**  
+Anton can leverage the system to correlate crash data with speed metrics and weather conditions. This use case allows him to assess whether high speeds or specific weather events (like heavy rain) significantly influence crash outcomes. The insights gained can inform his engineering decisions on designing safer traffic projects.
