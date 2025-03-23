@@ -54,5 +54,5 @@ Beyond her business, Melissa is a devoted mother of three, often found cheering 
 Melissa has little patience for clunky, unattractive designs, whether it’s a poorly decorated space or an unintuitive website. She values simplicity, elegance, and functionality, expecting things to work well and look good while doing it. If something is visually overwhelming or dull, she won’t hesitate to move on to something better.\
 
 ## Use Cases
-Use Case 1: Assessing Local Road Safety for Family and Business Routes
+**Use Case 1:** Assessing Local Road Safety for Family and Business Routes
 Melissa can use the visualization system to quickly review crash statistics and road safety data around Parnell and Auckland. With intuitive, clean dashboards that highlight crash locations, weather impacts, and road conditions, she can plan safer routes for family outings and business deliveries, ensuring that both her personal and professional travels are as safe as possible.
