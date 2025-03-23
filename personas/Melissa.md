@@ -55,4 +55,4 @@ Melissa has little patience for clunky, unattractive designs, whether it’s a p
 
 ## Use Cases
 **Use Case 1:** Assessing Local Road Safety for Family and Business Routes
-Melissa can use the visualization system to quickly review crash statistics and road safety data around Parnell and Auckland. With intuitive, clean dashboards that highlight crash locations, weather impacts, and road conditions, she can plan safer routes for family outings and business deliveries, ensuring that both her personal and professional travels are as safe as possible.
+Melissa can use the visualisation system to quickly review crash statistics and road safety data around Parnell and Auckland. With an intuitive and clean dashboard that highlight crash locations, weather impacts, and road conditions, she can plan safer routes for family outings and business deliveries, ensuring that both her personal and professional travels are as safe as possible.
