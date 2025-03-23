@@ -54,5 +54,6 @@ Sophie thrives in structured environments, preferring clean, efficient tools tha
 
 ## Use Case
 **Use Case 1:** Interactive Data Exploration and Trend Analysis
+
 Sophie can leverage the system’s interactive dashboard to drill down into detailed crash data. By filtering data based on variables like weather conditions, crash speed, vehicle types, and locations, she can identify statistical patterns and correlations. This enables her to develop predictive models and test hypotheses about risk factors, directly supporting her research and collaborative initiatives with NZTA.
 
