@@ -50,10 +50,10 @@ Sophie Bennett is a postgraduate statistics student based in Wellington, deeply 
 
 Her ultimate goal is to work alongside NZTA to create evidence-based interventions that reduce accidents and improve road conditions. She believes that well-structured data can make a tangible difference in public safety.
 
-Sophie thrives in structured environments, preferring clean, efficient tools that enhance her ability to interpret data rather than obscure it. While she appreciates good design, she prioritizes function over aesthetics—if something looks nice but doesn’t work well, it’s useless to her.
+Sophie thrives in structured environments, preferring clean, efficient tools that enhance her ability to interpret data rather than obscure it. While she appreciates good design, she prioritises function over aesthetics—if something looks nice but doesn’t work well, it’s useless to her.
 
 ## Use Case
-**Use Case 1:** Interactive Data Exploration and Trend Analysis
+**Use Case 1: Interactive Data Exploration and Trend Analysis**
 
 Sophie can leverage the system’s interactive dashboard to drill down into detailed crash data. By filtering data based on variables like weather conditions, crash speed, vehicle types, and locations, she can identify statistical patterns and correlations. This enables her to develop predictive models and test hypotheses about risk factors, directly supporting her research and collaborative initiatives with NZTA.
 
