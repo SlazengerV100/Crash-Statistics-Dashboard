@@ -3,7 +3,8 @@
 ----
 ## Alex
 ### Title: Heatmap of Crash Hotspots
-
+![Heat map (blue to red)](visualisation_planning/Heat%20map%20(blue%20to%20red).png)
+![Heat map (light to dark)](visualisation_planning/Heat%20map%20(light%20to%20dark).png)
 ### Description: 
 - A geographic heatmap displaying crash densities across New Zealand. 
 - The map will use colour intensity to indicate crash frequency, with red for high-density areas and blue for lower-density areas. 
@@ -20,7 +21,7 @@
 - **Interactive Elements**: **Hover effects** enhance engagement, making the data more accessible.
 
 ### Title: Linegraph comparisons of crashes in different regions
-
+![Crashes by region](visualisation_planning/Crashes_by_region.png)
 ### Description: 
 - Users can **select up to 4 regions** to compare crash trends.
 - **X-axis**: Time (adjustable & animated).
@@ -91,13 +92,6 @@ Breakdown by region provides a way for users to focus on specific areas and unde
 - Weather Influence is a key factor in many road accidents, and this graph would provide actionable insights into how weather affects crash frequency.
 - Comparison over time allows users to track how weather-related crashes have changed or worsened over the years.
 - Civil engineers and road safety officials could use this data to plan road improvements, weather-related warnings, and allocate resources during adverse conditions.
-----
-## Anthony 
-### Title: 
-
-### Descripton: 
-
-### Justification of design: 
 ----
 ## Kahu
 ### Title: 
