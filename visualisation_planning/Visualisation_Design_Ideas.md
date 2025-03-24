@@ -66,7 +66,7 @@
 - This design would be very useful for civil engineers such as Anton. Here, he would have interest in how features impact road incidents.
 
 ### Title: Time Series of Crashes
-
+![Crashes by severity](visualisation_planning/Crashes%20per%20year%20by%20severity.png)
 ### Descripton: 
 - A Time Series of crashes over time, with data displayed via a line graph.
 - **x-axis** involves year.
