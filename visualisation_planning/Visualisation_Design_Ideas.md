@@ -3,8 +3,8 @@
 ----
 ## Alex
 ### Title: Heatmap of Crash Hotspots
-![Heat map (blue to red)](visualisation_planning/Heat%20map%20-%20hue.png)
-![Heat map (light to dark)](visualisation_planning/Heat%20map%20-%20lightness.png)
+![Heat map hue](visualisation_planning/Heat%20map%20-%20hue.png)
+![Heat map lightness](visualisation_planning/Heat%20map%20-%20lightness.png)
 ### Description: 
 - A geographic heatmap displaying crash densities across New Zealand. 
 - The map will use colour intensity to indicate crash frequency, with red for high-density areas and blue for lower-density areas. 
