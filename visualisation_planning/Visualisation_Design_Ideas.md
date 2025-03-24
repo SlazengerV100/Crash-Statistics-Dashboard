@@ -127,8 +127,7 @@ of crashes over time, with color indications of the severity of the crashes.
 - **Interactive Elements**: The use of a map and bar chart allows for a more interactive experience, allowing users to quickly compare regions and see how they stack up against each other.
 - **Position & Spatial Encoding**: The use of a map allows for a more natural understanding of the data, as users can see where diffrent crashes happen.
 
-### Title:
-Crash Risk Factors Breakdown
+### Title: Crash Risk Factors Breakdown
 
 ### Descripton:
 This visualization will use either a Bubble Chart or a Parallel Coordinates Plot to analyze the 
