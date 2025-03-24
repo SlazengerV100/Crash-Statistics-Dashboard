@@ -94,9 +94,8 @@ Breakdown by region provides a way for users to focus on specific areas and unde
 - Civil engineers and road safety officials could use this data to plan road improvements, weather-related warnings, and allocate resources during adverse conditions.
 ----
 ## Kahu
-### Title: 
-Interactive Bar chart breakdown by region
-
+### Title: Interactive Bar chart breakdown by region
+![Example of animation](https://gitlab.ecs.vuw.ac.nz/course-work/swen422/2025/assignment1/team3/team-3-assignment-1/-/raw/main/visualisation_planning/Crashes%20by%20region%20per%20year%20time%20series.gif?ref_type=heads)
 ### Descripton: 
 make use of a geo map which outlines the different regions within New Zealand. Upon hovering over a region, the bar chart
 will display quick, easily digestible statistical information (average crashes/fatalities per year, ratio of minor/medium and severe crashes)
