@@ -83,7 +83,7 @@ Breakdown by region provides a way for users to focus on specific areas and unde
 - This design is beneficial for transportation agencies, city planners, and policymakers who need to understand long-term crash trends and target specific regions or crash types for further investigation or intervention.
 
 ### Title: Crash Trends by Weather Conditions 
-
+![Crashes by weather conditions](https://gitlab.ecs.vuw.ac.nz/course-work/swen422/2025/assignment1/team3/team-3-assignment-1/-/raw/main/visualisation_planning/Weather_conditions.png)
 ### Descripton: 
 - A line graph or stacked area chart that shows crash trends in relation to weather conditions (rain, snow, fog, clear).
 - The graph would display the number of crashes over time, grouped by weather condition.
