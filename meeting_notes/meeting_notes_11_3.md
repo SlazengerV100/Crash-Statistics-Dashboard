@@ -1,8 +1,11 @@
 # Meeting Notes
 
 **Date:** 11/3 
+
 **Time:** 3:15pm 
+
 **Location:** Honours Lab  
+
 **Attendees:**  
 - [x] Alex
 - [x] Za'rn
