@@ -1,7 +1,7 @@
 # Meeting Notes
 
-**Date:** 11/3
-**Time:** 3:15pm
+**Date:** 11/3 
+**Time:** 3:15pm 
 **Location:** Honours Lab  
 **Attendees:**  
 - [x] Alex
