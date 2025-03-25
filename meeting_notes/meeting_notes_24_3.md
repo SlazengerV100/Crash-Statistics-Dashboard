@@ -1,8 +1,11 @@
 # Meeting Notes
 
 **Date:** 24/3
+
 **Time:** 5:45PM  
+
 **Location:** Online
+
 **Attendees:**  
 - [x] Alex
 - [x] Za'rn
