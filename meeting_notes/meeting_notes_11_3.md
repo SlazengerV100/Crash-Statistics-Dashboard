@@ -32,6 +32,10 @@
     1. Next, each team member would select the best 2 ideas and create a selection of prototype designs (hand drawn, Figma, interactive)
     1. Only once we have our prototypes finalised and have ensured their effectivenes, will we start implementation. 
 
+- Project management methodology:
+    - KanBan for task management. All work must have ascociated ticket. Ticket columns are to-do, doing, done
+    - trunk based branching strategy to be used [see here](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development)
+
 ## Action Items
 | Task | Due Date |
 |------|----------|
