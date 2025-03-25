@@ -1,8 +1,11 @@
 # Meeting Notes
 
 **Date:** [YYYY-MM-DD]  
+
 **Time:** [HH:MM AM/PM]  
+
 **Location:** [office]  
+
 **Attendees:**  
 - [ ] Alex
 - [ ] Za'rn
