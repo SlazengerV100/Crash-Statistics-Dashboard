@@ -23,7 +23,7 @@
 
 - Discussion of horizontal bar graphs
     - Alex made a prototype of horizontal bar graphs showing number of crashes with certian features.
-    - We decided the graph comparing speeds of crashes was not very helpful as the data os very much the same every year with 100km being the highest by far then 50km with about half that and the rest are negligable
+    - We decided the graph comparing speeds of crashes was not very helpful as the data os very much the same every year with 50km being the highest by far then 100km with about half that and the rest are negligable
     - We decided the vehicle and weather condition horizontal bat graphs could be useful especially if they are displayed when clicking into a region
 
 - Talked about the region compare line graph visualisation next:
