@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Grid, Box, Typography, Button } from '@mui/material';
 
 const HelpPage: React.FC = () => {
     return(
         <>
-            <Box sx={{ padding: 2 }}>
-                <Typography variant="h4" gutterBottom>
-                    Welcome to the Help Page
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                    This is the page where you can get help and support for using the application.
-                </Typography>
-                <Button variant="contained" color="primary">
-                    Get Started
-                </Button>
-            </Box>
+            <Grid container justifyContent="center">
+                {/* Outer Grid occupying 9/12 of the width, centered */}
+                <Grid size={{xs:9}}>
+                    <Box sx={{ padding: 2, backgroundColor: 'lightgray', height: '100%' }}>
+                        <Typography variant="h6" gutterBottom>
+                            Help Section
+                        </Typography>
+                        <Typography variant="body2">
+                            Simple help section, could have a theme changer for accessibilty purposes???
+                        </Typography>
+                    </Box>
+                </Grid>
+            </Grid>
         </>
     )
 }
