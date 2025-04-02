@@ -6,7 +6,7 @@ import App from './App';
 
 const baseTheme = createTheme();
 
-const ThemedApp : React.FC = () => {
+const ThemedApp = () => {
   return (
     <>
         <ThemeProvider theme = {baseTheme}>

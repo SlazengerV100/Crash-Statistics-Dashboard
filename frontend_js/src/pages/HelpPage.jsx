@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
 
-const HelpPage: React.FC = () => {
+const HelpPage = () => {
     return(
         <>
             <Grid container justifyContent="center">
