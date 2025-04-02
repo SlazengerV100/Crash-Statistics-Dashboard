@@ -3,57 +3,135 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('my_database.db');
 
 const initDB = () => {
-  const createTable = (tableName, tableDefinition) => {
-    const query = `CREATE TABLE IF NOT EXISTS ${tableName} (${tableDefinition})`;
+    const createTable = (tableName, tableDefinition) => {
+        const query = `CREATE TABLE IF NOT EXISTS ${tableName}
+                       (
+                           ${tableDefinition}
+                       )`;
 
-    db.run(query, (err) => {
-      if (err) {
-        console.error(`Error creating table ${tableName}:`, err.message);
-      } else {
-        console.log(`Table ${tableName} created or already exists.`);
-      }
-    });
-  };
+        db.run(query, (err) => {
+            if (err) {
+                console.error(`Error creating table ${tableName}:`, err.message);
+            } else {
+                console.log(`Table ${tableName} created or already exists.`);
+            }
+        });
+    };
+    const dummyTable = `
+    OBJECTID INTEGER PRIMARY KEY,
+    advisorySpeed TEXT,
+    areaUnitID INTEGER,
+    bicycle INTEGER,
+    bridge INTEGER,
+    bus INTEGER,
+    carStationWagon INTEGER,
+    cliffBank INTEGER,
+    crashDirectionDescription TEXT,
+    crashFinancialYear TEXT,
+    crashLocation1 TEXT,
+    crashLocation2 TEXT,
+    crashRoadSideRoad TEXT,
+    crashSeverity TEXT,
+    crashSHDescription TEXT,
+    crashYear INTEGER,
+    debris INTEGER,
+    directionRoleDescription TEXT,
+    ditch INTEGER,
+    fatalCount INTEGER,
+    fence INTEGER,
+    flatHill TEXT,
+    guardRail INTEGER,
+    holiday TEXT,
+    houseOrBuilding INTEGER,
+    intersection TEXT,
+    kerb INTEGER,
+    light TEXT,
+    meshblockId INTEGER,
+    minorInjuryCount INTEGER,
+    moped INTEGER,
+    motorcycle INTEGER,
+    NumberOfLanes INTEGER,
+    objectThrownOrDropped INTEGER,
+    otherObject INTEGER,
+    otherVehicleType INTEGER,
+    overBank INTEGER,
+    parkedVehicle INTEGER,
+    pedestrian INTEGER,
+    phoneBoxEtc INTEGER,
+    postOrPole INTEGER,
+    region TEXT,
+    roadCharacter TEXT,
+    roadLane TEXT,
+    roadSurface TEXT,
+    roadworks INTEGER,
+    schoolBus INTEGER,
+    seriousInjuryCount INTEGER,
+    slipOrFlood INTEGER,
+    speedLimit INTEGER,
+    strayAnimal INTEGER,
+    streetLight TEXT,
+    suv INTEGER,
+    taxi INTEGER,
+    temporarySpeedLimit INTEGER,
+    tlaId INTEGER,
+    tlaName TEXT,
+    trafficControl TEXT,
+    trafficIsland INTEGER,
+    trafficSign INTEGER,
+    train INTEGER,
+    tree INTEGER,
+    truck INTEGER,
+    unknownVehicleType INTEGER,
+    urban TEXT,
+    vanOrUtility INTEGER,
+    vehicle INTEGER,
+    waterRiver INTEGER,
+    weatherA TEXT,
+    weatherB TEXT,
+    longitude REAL,
+    latitude REAL
+`;
+    createTable('dummy_table', dummyTable)
 
-  const weatherTable = `
+    const weatherTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     weather_condition TEXT NOT NULL
   `;
-  createTable('weather_conditions', weatherTable);
+    createTable('weather_conditions', weatherTable);
 
-  const crashSeverityTable = `
+    const crashSeverityTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     severity_description TEXT NOT NULL
   `;
-  createTable('crash_severity', crashSeverityTable);
+    createTable('crash_severity', crashSeverityTable);
 
-  const regionTable = `
+    const regionTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     region_name TEXT NOT NULL
   `;
-  createTable('region', regionTable);
+    createTable('region', regionTable);
 
-  const locationTable = `
+    const locationTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     crash_location_1 TEXT,
     crash_location_2 TEXT,
     crash_road_side_road TEXT
   `;
-  createTable('location', locationTable);
+    createTable('location', locationTable);
 
-  const trafficControlTable = `
+    const trafficControlTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     traffic_control_description TEXT
   `;
-  createTable('traffic_control', trafficControlTable);
+    createTable('traffic_control', trafficControlTable);
 
-  const roadFeaturesTable = `
+    const roadFeaturesTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     feature_name TEXT
   `;
-  createTable('road_features', roadFeaturesTable);
+    createTable('road_features', roadFeaturesTable);
 
-  const crashesTable = `
+    const crashesTable = `
     OBJECTID INTEGER PRIMARY KEY,
     advisory_speed INTEGER,
     area_unit_id INTEGER,
@@ -76,49 +154,49 @@ const initDB = () => {
     FOREIGN KEY (traffic_control_id) REFERENCES traffic_control(id),
     FOREIGN KEY (road_features_id) REFERENCES road_features(id)
   `;
-  createTable('crashes', crashesTable);
+    createTable('crashes', crashesTable);
 
-  const crashWeatherTable = `
+    const crashWeatherTable = `
     crash_id INTEGER,  -- Foreign key to crashes table
     weather_id INTEGER, -- Foreign key to weather_conditions table
     PRIMARY KEY (crash_id, weather_id),
     FOREIGN KEY (crash_id) REFERENCES crashes(OBJECTID),
     FOREIGN KEY (weather_id) REFERENCES weather_conditions(id)
   `;
-  createTable('crash_weather', crashWeatherTable);
+    createTable('crash_weather', crashWeatherTable);
 
-  const vehicleTypesTable = `
+    const vehicleTypesTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     vehicle_type TEXT NOT NULL
   `;
-  createTable('vehicle_types', vehicleTypesTable);
+    createTable('vehicle_types', vehicleTypesTable);
 
-  const crashVehicleTable = `
+    const crashVehicleTable = `
     crash_id INTEGER,           -- Foreign key to crashes table
     vehicle_type_id INTEGER,    -- Foreign key to vehicle_types table
     PRIMARY KEY (crash_id, vehicle_type_id),
     FOREIGN KEY (crash_id) REFERENCES crashes(OBJECTID),
     FOREIGN KEY (vehicle_type_id) REFERENCES vehicle_types(id)
   `;
-  createTable('crash_vehicle', crashVehicleTable);
+    createTable('crash_vehicle', crashVehicleTable);
 
-  db.all('SELECT name FROM sqlite_master WHERE type="table";', (err, rows) => {
-    if (err) {
-      console.error('Error listing tables:', err.message);
-    } else {
-      console.log('Tables in the database:', rows);
-    }
-  });
+    db.all('SELECT name FROM sqlite_master WHERE type="table";', (err, rows) => {
+        if (err) {
+            console.error('Error listing tables:', err.message);
+        } else {
+            console.log('Tables in the database:', rows);
+        }
+    });
 
-  console.log('Database schema initialized successfully!');
+    console.log('Database schema initialized successfully!');
 };
 
 initDB();
 
 db.close((err) => {
-  if (err) {
-    console.error('Error closing the database:', err.message);
-  } else {
-    console.log('Database connection closed.');
-  }
+    if (err) {
+        console.error('Error closing the database:', err.message);
+    } else {
+        console.log('Database connection closed.');
+    }
 });
