@@ -1,3 +1,5 @@
+require('dotenv').config({path: './backend/.env'});
+
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const JSONStream = require('JSONStream');
@@ -26,7 +28,7 @@ const insertStmt = db.prepare(`
 
 
 // Stream the JSON file and process each feature incrementally
-const stream = fs.createReadStream('/Users/kahu/Downloads/crash_data.json', { encoding: 'utf8' });
+const stream = fs.createReadStream(process.env.CRASH_JSON_PATH, { encoding: 'utf8' });
 const parser = JSONStream.parse('features.*');
 
 let rowsProcessed = 0;

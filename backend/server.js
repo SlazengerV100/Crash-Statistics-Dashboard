@@ -1,8 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 
-// Create a new SQLite database (ensure the path matches where your database is located)
-const db = new sqlite3.Database('./backend/my_database.db'); // Update with the correct path to your SQLite DB
+const db = new sqlite3.Database('./backend/my_database.db');
 
 const app = express();
 const port = 5000;
