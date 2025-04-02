@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
 
-const TimeSeriesPage: React.FC = () => {
-    return(
+const PredictorPage = () => {
+    return (
         <Grid container justifyContent="center">
             {/* Outer Grid occupying 9/12 of the width, centered */}
             <Grid size={{xs:9}}>
@@ -11,10 +11,10 @@ const TimeSeriesPage: React.FC = () => {
                     <Grid size={{xs:4}}>
                         <Box sx={{ padding: 2, backgroundColor: 'lightgray', height: '100%' }}>
                             <Typography variant="h6" gutterBottom>
-                                Control Section for Time Series
+                                Control panel for predictor
                             </Typography>
                             <Typography variant="body2">
-                                Enter the relevant options to generate a relevant time series.
+                                Enter the necessary data to generate a prediction.
                             </Typography>
                         </Box>
                     </Grid>
@@ -23,10 +23,10 @@ const TimeSeriesPage: React.FC = () => {
                     <Grid size = {{xs:8}}>
                         <Box sx={{ padding: 2, backgroundColor: 'whitesmoke', height: '100%' }}>
                             <Typography variant="h4" gutterBottom>
-                                Time Series Output
+                                Predictor Output
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                View the resulting chart based on the control panel on the left?
+                                View the prediction results based on your input.
                             </Typography>
                             <Button variant="contained" color="primary">
                                 Get Started
@@ -36,7 +36,7 @@ const TimeSeriesPage: React.FC = () => {
                 </Grid>
             </Grid>
         </Grid>
-    )
-}
+    );
+};
 
-export default TimeSeriesPage;
+export default PredictorPage;

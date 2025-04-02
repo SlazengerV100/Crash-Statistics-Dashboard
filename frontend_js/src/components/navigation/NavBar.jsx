@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const NavBar : React.FC = () => {
+const NavBar = () => {
     const location = window.location;
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Typography} from '@mui/material';
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
     return(
         <>  
             <Grid container size={{xs:12}} justifyContent="center">
