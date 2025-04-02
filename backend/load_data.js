@@ -1,98 +1,79 @@
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
-const readline = require('readline');
+const JSONStream = require('JSONStream');
 
-// Initialize SQLite DB connection
 const db = new sqlite3.Database('my_database.db');
 
-// Create a read stream for the large file
-const fileStream = fs.createReadStream('/Users/kahu/Downloads/Crash_Analysis_System_(CAS)_data.geojson', 'utf8');
-const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-});
+const insertStmt = db.prepare(`
+    INSERT INTO dummy_table (
+        OBJECTID, advisorySpeed, areaUnitID, bicycle, bridge, bus, carStationWagon,
+        cliffBank, crashDirectionDescription, crashFinancialYear, crashLocation1,
+        crashLocation2, crashRoadSideRoad, crashSeverity, crashSHDescription, crashYear,
+        debris, directionRoleDescription, ditch, fatalCount, fence, flatHill, guardRail,
+        holiday, houseOrBuilding, intersection, kerb, light, meshblockId, minorInjuryCount,
+        moped, motorcycle, NumberOfLanes, objectThrownOrDropped, otherObject,
+        otherVehicleType, overBank, parkedVehicle, pedestrian, phoneBoxEtc, postOrPole,
+        region, roadCharacter, roadLane, roadSurface, roadworks, schoolBus,
+        seriousInjuryCount, slipOrFlood, speedLimit, strayAnimal, streetLight, suv, taxi,
+        temporarySpeedLimit, tlaId, tlaName, trafficControl, trafficIsland, trafficSign,
+        train, tree, truck, unknownVehicleType, urban, vanOrUtility, vehicle, waterRiver,
+        weatherA, weatherB, longitude, latitude
+    ) VALUES (
+                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?
+             )
+`)
 
-let currentLine = '';
-let isGeoJSONStart = false;
-let isGeoJSONEnd = false;
-let totalLines = 0;
-let processedLines = 0;
-let totalFeatures = 0;
-let processedFeatures = 0;
 
-// First, count the total lines and features for progress tracking
-rl.on('line', (line) => {
-    totalLines++;
-});
 
-rl.on('close', () => {
-    console.log(`Total lines in file: ${totalLines}`);
-});
+// Stream the JSON file and process each feature incrementally
+const stream = fs.createReadStream('/Users/kahu/Downloads/crash_data.json', { encoding: 'utf8' });
+const parser = JSONStream.parse('features.*');
 
-// Process each line of the GeoJSON file
-rl.on('line', (line) => {
-    currentLine += line.trim();
+let rowsProcessed = 0;
 
-    // Check if the start of the GeoJSON file is found
-    if (currentLine.startsWith('{') && !isGeoJSONStart) {
-        isGeoJSONStart = true;
-    }
+stream.pipe(parser);
 
-    // Check if the end of the GeoJSON file is found
-    if (currentLine.endsWith('}') && !isGeoJSONEnd && isGeoJSONStart) {
-        isGeoJSONEnd = true;
+parser.on('data', (feature) => {
+    try {
+        const p = feature.properties || {};
+        const coords = feature.geometry?.coordinates || [null, null];
 
-        try {
-            // Parse the GeoJSON content
-            const geojson = JSON.parse(currentLine);
-            totalFeatures = geojson.features.length;
+        // Insert the data into the database
+        insertStmt.run([
+            p.OBJECTID ?? null, p.advisorySpeed ?? null, p.areaUnitID ?? null, p.bicycle ?? null,
+            p.bridge ?? null, p.bus ?? null, p.carStationWagon ?? null, p.cliffBank ?? null,
+            p.crashDirectionDescription ?? null, p.crashFinancialYear ?? null, p.crashLocation1 ?? null,
+            p.crashLocation2 ?? null, p.crashRoadSideRoad ?? null, p.crashSeverity ?? null,
+            p.crashSHDescription ?? null, p.crashYear ?? null, p.debris ?? null, p.directionRoleDescription ?? null,
+            p.ditch ?? null, p.fatalCount ?? null, p.fence ?? null, p.flatHill ?? null, p.guardRail ?? null,
+            p.holiday ?? null, p.houseOrBuilding ?? null, p.intersection ?? null, p.kerb ?? null,
+            p.light ?? null, p.meshblockId ?? null, p.minorInjuryCount ?? null, p.moped ?? null,
+            p.motorcycle ?? null, p.NumberOfLanes ?? null, p.objectThrownOrDropped ?? null, p.otherObject ?? null,
+            p.otherVehicleType ?? null, p.overBank ?? null, p.parkedVehicle ?? null, p.pedestrian ?? null,
+            p.phoneBoxEtc ?? null, p.postOrPole ?? null, p.region ?? null, p.roadCharacter ?? null,
+            p.roadLane ?? null, p.roadSurface ?? null, p.roadworks ?? null, p.schoolBus ?? null,
+            p.seriousInjuryCount ?? null, p.slipOrFlood ?? null, p.speedLimit ?? null, p.strayAnimal ?? null,
+            p.streetLight ?? null, p.suv ?? null, p.taxi ?? null, p.temporarySpeedLimit ?? null,
+            p.tlaId ?? null, p.tlaName ?? null, p.trafficControl ?? null, p.trafficIsland ?? null,
+            p.trafficSign ?? null, p.train ?? null, p.tree ?? null, p.truck ?? null,
+            p.unknownVehicleType ?? null, p.urban ?? null, p.vanOrUtility ?? null, p.vehicle ?? null,
+            p.waterRiver ?? null, p.weatherA ?? null, p.weatherB ?? null,
+            coords[0] ?? null, coords[1] ?? null // Ensure coordinates are always provided
+        ]);
 
-            // Loop through each feature and insert weather data into the database
-            geojson.features.forEach((feature, index) => {
-                const properties = feature.properties;
-                const weatherCondition = properties.weatherA;
-
-                if (weatherCondition) {
-                    insertWeatherConditions(weatherCondition);
-                }
-
-            });
-
-            console.log('Weather data processed successfully.');
-        } catch (parseError) {
-            console.error('Error parsing the GeoJSON content:', parseError);
+        rowsProcessed++;
+        if (rowsProcessed % 10 === 0) {
+            console.log(`Processed ${rowsProcessed} rows...`);
         }
-
-        // Close the read stream once processing is done
-        rl.close();
+    } catch (error) {
+        console.error('Error processing feature:', error.message);
     }
-
-    processedLines++;
-
-    // Show progress every 100 lines processed
-  console.log(`${processedLines} ${totalLines}`)
 });
 
-// Handle any stream errors
-fileStream.on('error', (err) => {
-    console.error('Error reading the file stream:', err);
-});
+parser.on('end', () => {
+    insertStmt.finalize();
+    console.log(`Finished processing ${rowsProcessed} features.`);
 
-// Function to insert weather data into the weather_conditions table
-const insertWeatherConditions = (weatherCondition) => {
-    const query = `INSERT INTO weather_conditions (weather_condition) VALUES (?)`;
-
-    db.run(query, [weatherCondition], function (err) {
-        if (err) {
-            console.error('Error inserting weather condition:', err.message);
-        } else {
-            // You can also log progress of successful inserts if needed
-        }
-    });
-};
-
-// Close the database connection once done
-rl.on('close', () => {
     db.close((err) => {
         if (err) {
             console.error('Error closing the database:', err.message);
@@ -100,4 +81,8 @@ rl.on('close', () => {
             console.log('Database connection closed.');
         }
     });
+});
+
+parser.on('error', (error) => {
+    console.error('Error reading or parsing JSON:', error.message);
 });
