@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
 
-const FactorsPage: React.FC = () => {
+const FactorsPage = () => {
     return(
         <Grid container justifyContent="center">
             {/* Outer Grid occupying 9/12 of the width, centered */}
