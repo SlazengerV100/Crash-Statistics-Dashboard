@@ -1,8 +1,9 @@
-require('dotenv').config({path: './backend/.env'});
+import sqlite3 from 'sqlite3';
+import fs from 'fs';
+import JSONStream from 'JSONStream';
 
-const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs');
-const JSONStream = require('JSONStream');
+
+const jsonDataPAth = "/Users/kahu/Downloads/crash_data.json"
 
 const db = new sqlite3.Database('my_database.db');
 
@@ -25,10 +26,8 @@ const insertStmt = db.prepare(`
              )
 `)
 
-
-
 // Stream the JSON file and process each feature incrementally
-const stream = fs.createReadStream(process.env.CRASH_JSON_PATH, { encoding: 'utf8' });
+const stream = fs.createReadStream(jsonDataPAth, { encoding: 'utf8' });
 const parser = JSONStream.parse('features.*');
 
 let rowsProcessed = 0;
@@ -73,18 +72,29 @@ parser.on('data', (feature) => {
 });
 
 parser.on('end', () => {
-    insertStmt.finalize();
-    console.log(`Finished processing ${rowsProcessed} features.`);
+    insertStmt.finalize()
+    console.log(`Finished processing ${rowsProcessed} features.`)
 
-    db.close((err) => {
-        if (err) {
-            console.error('Error closing the database:', err.message);
-        } else {
-            console.log('Database connection closed.');
-        }
-    });
-});
+    loadWeatherConditions()
+    loadCrashSeverity()
+    loadRegion()
+    loadVehicleType()
+})
 
 parser.on('error', (error) => {
-    console.error('Error reading or parsing JSON:', error.message);
-});
+    console.error('Error reading or parsing JSON:', error.message)
+})
+
+const loadVehicleType = () => {
+
+}
+const loadRegion = () => {
+
+}
+const loadCrashSeverity = () => {
+
+}
+const loadWeatherConditions = () => {
+
+}
+
