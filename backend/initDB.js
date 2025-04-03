@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('my_database.db');
 
 const initDB = () => {
-    const createTable = (tableName, tableDefinition) => {
+    const createTable = (tableName, tableDefinition, callback) => {
         const query = `CREATE TABLE IF NOT EXISTS ${tableName}
                        (
                            ${tableDefinition}
@@ -13,10 +13,88 @@ const initDB = () => {
             if (err) {
                 console.error(`Error creating table ${tableName}:`, err.message);
             } else {
-                console.log(`Table ${tableName} created`);
+                console.log(`Table ${tableName} created or already exists.`);
             }
+            callback(err);
         });
     };
+
+    const dummyTable = `
+    OBJECTID INTEGER PRIMARY KEY,
+    advisorySpeed TEXT,
+    areaUnitID INTEGER,
+    bicycle INTEGER,
+    bridge INTEGER,
+    bus INTEGER,
+    carStationWagon INTEGER,
+    cliffBank INTEGER,
+    crashDirectionDescription TEXT,
+    crashFinancialYear TEXT,
+    crashLocation1 TEXT,
+    crashLocation2 TEXT,
+    crashRoadSideRoad TEXT,
+    crashSeverity TEXT,
+    crashSHDescription TEXT,
+    crashYear INTEGER,
+    debris INTEGER,
+    directionRoleDescription TEXT,
+    ditch INTEGER,
+    fatalCount INTEGER,
+    fence INTEGER,
+    flatHill TEXT,
+    guardRail INTEGER,
+    holiday TEXT,
+    houseOrBuilding INTEGER,
+    intersection TEXT,
+    kerb INTEGER,
+    light TEXT,
+    meshblockId INTEGER,
+    minorInjuryCount INTEGER,
+    moped INTEGER,
+    motorcycle INTEGER,
+    NumberOfLanes INTEGER,
+    objectThrownOrDropped INTEGER,
+    otherObject INTEGER,
+    otherVehicleType INTEGER,
+    overBank INTEGER,
+    parkedVehicle INTEGER,
+    pedestrian INTEGER,
+    phoneBoxEtc INTEGER,
+    postOrPole INTEGER,
+    region TEXT,
+    roadCharacter TEXT,
+    roadLane TEXT,
+    roadSurface TEXT,
+    roadworks INTEGER,
+    schoolBus INTEGER,
+    seriousInjuryCount INTEGER,
+    slipOrFlood INTEGER,
+    speedLimit INTEGER,
+    strayAnimal INTEGER,
+    streetLight TEXT,
+    suv INTEGER,
+    taxi INTEGER,
+    temporarySpeedLimit INTEGER,
+    tlaId INTEGER,
+    tlaName TEXT,
+    trafficControl TEXT,
+    trafficIsland INTEGER,
+    trafficSign INTEGER,
+    train INTEGER,
+    tree INTEGER,
+    truck INTEGER,
+    unknownVehicleType INTEGER,
+    urban TEXT,
+    vanOrUtility INTEGER,
+    vehicle INTEGER,
+    waterRiver INTEGER,
+    weatherA TEXT,
+    weatherB TEXT,
+    longitude REAL,
+    latitude REAL
+`;
+
+    createTable('dummy_table', dummyTable)
 
     const weatherTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
