@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('my_database.db');
 
 const initDB = () => {
-    const createTable = (tableName, tableDefinition, callback) => {
+    const createTable = (tableName, tableDefinition) => {
         const query = `CREATE TABLE IF NOT EXISTS ${tableName}
                        (
                            ${tableDefinition}
@@ -15,7 +15,6 @@ const initDB = () => {
             } else {
                 console.log(`Table ${tableName} created or already exists.`);
             }
-            callback(err);
         });
     };
 
@@ -94,7 +93,7 @@ const initDB = () => {
     latitude REAL
 `;
 
-    createTable('dummy_table', dummyTable)
+     createTable('dummy_table', dummyTable)
 
     const weatherTable = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,20 +146,16 @@ const initDB = () => {
 
     const crashesTable = `
     OBJECTID INTEGER PRIMARY KEY,
-    crash_year INTEGER,        -- e.g., "2002"
+    crash_year INTEGER,
     fatal_count INTEGER,
     minor_injury_count INTEGER,
     serious_injury_count INTEGER,
     speed_limit INTEGER,
     crash_severity_id INTEGER, -- Foreign key to crash_severity table
-    region_id INTEGER,         -- Foreign key to region table
-    location_id INTEGER,       -- Foreign key to location table
     traffic_control_id INTEGER, -- Foreign key to traffic_control table
     tla_id INTEGER,             -- Foreign key to tla_names table
     road_features_id INTEGER,  -- Foreign key to road_features table
     FOREIGN KEY (crash_severity_id) REFERENCES crash_severity(id),
-    FOREIGN KEY (region_id) REFERENCES region(id),
-    FOREIGN KEY (location_id) REFERENCES location(id),
     FOREIGN KEY (traffic_control_id) REFERENCES traffic_control(id),
     FOREIGN KEY (road_features_id) REFERENCES road_features(id),
     FOREIGN KEY (tla_id) REFERENCES tla_names(id) -- Added foreign key to tla_names table
