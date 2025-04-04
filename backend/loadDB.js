@@ -1,8 +1,12 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import JSONStream from 'JSONStream';
+import dotenv from 'dotenv';
 
-const jsonDataPath = "/Users/kahu/Downloads/crash_data.json";
+// Load environment variables
+dotenv.config();
+
+const jsonDataPath = process.env.DATABASE_PATH;
 const loadDataSQLPath = "load_data.sql";
 const initDBPath = "initDB.sql";
 const db = new sqlite3.Database('my_database.db');
