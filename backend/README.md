@@ -11,26 +11,16 @@ Before starting, ensure you have the crash data GeoJSON file. If you don't alrea
     - Place the file in the appropriate directory (make note of its path for the next step).
 
 2. **Set Up the Environment Variables:**
-    - Create a `.env` file inside the `backend/` directory.
-    - Use the `example_env_file.txt` as a template. Ensure you update the path to the JSON file in the `.env` file and remove any spaces in the path.
+    - at the top of the loadDB.js file please update the `jsonDataPath`.
 
 3. **Install Dependencies:**
-   Run the following command to install required packages:
+   cd to the backend and Run the following command to install required packages:
    ```bash
    npm install
     ```
 4. **Initialize the Database:**
    Load the database schema by running the following:
    ```bash
-   node initDB.js
-   ```
-5. **Load the Data:**
-Load the data into the database by running the following:
-   ```bash
    node loadDB.js
    ```
-
-TODO:
-Load the Actual Database:
-
-Update loadDB.js to load the actual crash data and populate the relevant tables.
+   AND WAIT IT WILL TAKE A WHILE
