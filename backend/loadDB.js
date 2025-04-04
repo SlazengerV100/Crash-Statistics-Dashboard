@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import JSONStream from 'JSONStream';
 
-const jsonDataPAth = "/Users/kahu/Downloads/crash_data.json";
+const jsonDataPath = "/Users/kahu/Downloads/crash_data.json";
 const loadDataSQLPath = "load_data.sql";
 const initDBPath = "initDB.sql";
 const db = new sqlite3.Database('my_database.db');
@@ -38,15 +38,13 @@ const insertStmt = db.prepare(`
 `);
 
 // Stream the JSON file and process each feature incrementally
-const stream = fs.createReadStream(jsonDataPAth, {encoding: 'utf8'});
+const stream = fs.createReadStream(jsonDataPath, {encoding: 'utf8'});
 const parser = JSONStream.parse('features.*');
 let rowsProcessed = 0;
 
 stream.pipe(parser);
 
 db.serialize(() => {
-    db.run("BEGIN TRANSACTION");
-
     parser.on('data', (feature) => {
         try {
             const p = feature.properties || {};
@@ -85,8 +83,8 @@ db.serialize(() => {
     });
 
     parser.on('end', () => {
-        db.run("COMMIT"); // Commit the transaction - finalizing everything in one go (no early reads)
         console.log(`Finished processing ${rowsProcessed} features.`);
+        console.log('Executing load_data.sql...');
         executeSQL(loadDataSQLPath);
     });
 

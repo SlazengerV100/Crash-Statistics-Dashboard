@@ -90,4 +90,5 @@ SELECT dummy_table.OBJECTID,
        dummy_table.holiday
 FROM dummy_table;
 
+DROP TABLE dummy_table;
 
