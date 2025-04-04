@@ -3,30 +3,42 @@ import fs from 'fs';
 import JSONStream from 'JSONStream';
 
 const jsonDataPAth = "/Users/kahu/Downloads/crash_data.json";
-
+const loadDataSQLPath = "load_data.sql";
+const initDBPath = "initDB.sql";
 const db = new sqlite3.Database('my_database.db');
 
+const executeSQL = (filePath) => {
+    const sql = fs.readFileSync(filePath, 'utf8');
+    db.exec(sql, (err) => {
+        if (err) {
+            console.error('Error executing load_data.sql:', err.message);
+        } else {
+            console.log('load_data.sql executed successfully');
+        }
+    });
+};
+
+executeSQL(initDBPath)
+
 const insertStmt = db.prepare(`
-    INSERT INTO dummy_table (
-        OBJECTID, advisorySpeed, areaUnitID, bicycle, bridge, bus, carStationWagon,
-        cliffBank, crashDirectionDescription, crashFinancialYear, crashLocation1,
-        crashLocation2, crashRoadSideRoad, crashSeverity, crashSHDescription, crashYear,
-        debris, directionRoleDescription, ditch, fatalCount, fence, flatHill, guardRail,
-        holiday, houseOrBuilding, intersection, kerb, light, meshblockId, minorInjuryCount,
-        moped, motorcycle, NumberOfLanes, objectThrownOrDropped, otherObject,
-        otherVehicleType, overBank, parkedVehicle, pedestrian, phoneBoxEtc, postOrPole,
-        region, roadCharacter, roadLane, roadSurface, roadworks, schoolBus,
-        seriousInjuryCount, slipOrFlood, speedLimit, strayAnimal, streetLight, suv, taxi,
-        temporarySpeedLimit, tlaId, tlaName, trafficControl, trafficIsland, trafficSign,
-        train, tree, truck, unknownVehicleType, urban, vanOrUtility, vehicle, waterRiver,
-        weatherA, weatherB, longitude, latitude
-    ) VALUES (
-                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-             )
+    INSERT INTO dummy_table (OBJECTID, advisorySpeed, areaUnitID, bicycle, bridge, bus, carStationWagon,
+                             cliffBank, crashDirectionDescription, crashFinancialYear, crashLocation1,
+                             crashLocation2, crashRoadSideRoad, crashSeverity, crashSHDescription, crashYear,
+                             debris, directionRoleDescription, ditch, fatalCount, fence, flatHill, guardRail,
+                             holiday, houseOrBuilding, intersection, kerb, light, meshblockId, minorInjuryCount,
+                             moped, motorcycle, NumberOfLanes, objectThrownOrDropped, otherObject,
+                             otherVehicleType, overBank, parkedVehicle, pedestrian, phoneBoxEtc, postOrPole,
+                             region, roadCharacter, roadLane, roadSurface, roadworks, schoolBus,
+                             seriousInjuryCount, slipOrFlood, speedLimit, strayAnimal, streetLight, suv, taxi,
+                             temporarySpeedLimit, tlaId, tlaName, trafficControl, trafficIsland, trafficSign,
+                             train, tree, truck, unknownVehicleType, urban, vanOrUtility, vehicle, waterRiver,
+                             weatherA, weatherB, longitude, latitude)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 // Stream the JSON file and process each feature incrementally
-const stream = fs.createReadStream(jsonDataPAth, { encoding: 'utf8' });
+const stream = fs.createReadStream(jsonDataPAth, {encoding: 'utf8'});
 const parser = JSONStream.parse('features.*');
 let rowsProcessed = 0;
 
@@ -73,53 +85,12 @@ db.serialize(() => {
     });
 
     parser.on('end', () => {
-        insertStmt.finalize();
         db.run("COMMIT"); // Commit the transaction - finalizing everything in one go (no early reads)
         console.log(`Finished processing ${rowsProcessed} features.`);
-
-        loadWeatherConditions();
-        loadRegion();
-        loadCrashSeverity();
-        loadTlaNames();
-        loadTrafficControl();
-        loadRoadFeatures();
-        loadCrashes();
-        loadCrashWeather();
-        loadLocations();
-        loadCrashStats();
+        executeSQL(loadDataSQLPath);
     });
 
     parser.on('error', (error) => {
         console.error('Error reading or parsing JSON:', error.message);
     });
 });
-
-const loadRegion = () => {
-};
-
-const loadCrashSeverity = () => {
-};
-
-const loadWeatherConditions = () => {
-};
-
-const loadTlaNames = () => {
-};
-
-const loadTrafficControl = () => {
-};
-
-const loadRoadFeatures = () => {
-};
-
-const loadCrashes = () => {
-};
-
-const loadCrashWeather = () => {
-};
-
-const loadLocations = () => {
-};
-
-const loadCrashStats = () => {
-};
