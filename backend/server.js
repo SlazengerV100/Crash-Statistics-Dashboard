@@ -57,35 +57,20 @@ app.get('/api/vehicle-types', (req, res) => {
 
 // Get crash counts by regions across years
 app.post('/api/crashes/yearly-counts', (req, res) => {
-    console.log('Received request');
-    console.log(req.body);
-    const { regions, startYear, endYear } = req.body;
-    
-    // Validate input
-    if (!regions || !Array.isArray(regions) || regions.length === 0) {
-        return res.status(400).json({ 
-            error: 'regions must be a non-empty array of region names'
-        });
-    }
-
-    if (!startYear || !endYear) {
-        return res.status(400).json({ 
-            error: 'Both startYear and endYear are required in the request body'
-        });
-    }
+    const { selectedRegions, startYear, endYear } = req.body;
 
     const start = parseInt(startYear);
     const end = parseInt(endYear);
 
     // Validate years
-    if (isNaN(start) || isNaN(end) || start > end) {
+    if (start > end) {
         return res.status(400).json({ 
             error: 'Invalid year range. startYear must be less than or equal to endYear'
         });
     }
 
-    // Create parameterized query with dynamic number of regions
-    const placeholders = regions.map(() => '?').join(',');
+    // Kahu can u make this better if it needs to be?
+    const placeholders = selectedRegions.map(() => '?').join(',');
     const query = `
         SELECT 
             l.region_name,
@@ -100,7 +85,7 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
     `;
 
     // Combine regions array with year parameters
-    const params = [...regions, start, end];
+    const params = [...selectedRegions, start, end];
 
     db.all(query, params, (err, rows) => {
         if (err) {
@@ -114,8 +99,8 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
             );
 
             // Process data for Chart.js format
-            const dataByRegion = regions.reduce((acc, region) => {
-                acc[region] = years.reduce((yearAcc, year) => {
+            const dataByRegion = selectedRegions.reduce((acc, selectedRegions) => {
+                acc[selectedRegions] = years.reduce((yearAcc, year) => {
                     yearAcc[year] = 0;
                     return yearAcc;
                 }, {});
@@ -130,13 +115,33 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
             // Format response for Chart.js
             const response = {
                 labels: years,
-                datasets: regions.map(region => ({
-                    label: region,
-                    data: years.map(year => dataByRegion[region][year])
+                datasets: selectedRegions.map(selectedRegions => ({
+                    label: selectedRegions,
+                    data: years.map(year => dataByRegion[selectedRegions][year])
                 }))
             };
 
             res.json(response);
+        }
+    });
+});
+
+// Get all unique regions
+app.get('/api/regions', (req, res) => {
+    const query = `
+        SELECT DISTINCT region_name 
+        FROM location 
+        WHERE region_name IS NOT NULL 
+        ORDER BY region_name
+    `;
+
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error fetching regions:', err);
+            res.status(500).json({ error: err.message });
+        } else {
+            const regions = rows.map(row => row.region_name);
+            res.json(regions);
         }
     });
 });

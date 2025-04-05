@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, Autocomplete, TextField, Box, Typography, Button, IconButton, Slider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-const ControlPanel = ({ onLoad }) => {
-    const [selectedRegions, setSelectedRegions] = useState(['Wellington', 'Auckland', 'Canterbury']);
-    const [timeRange, setTimeRange] = useState([2008, 2025]);
+const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, setYearRange }) => {
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    const [regions, setRegions] = useState([]);
 
-    // Placeholder regions for the Autocomplete
-    const regions = [
-        'Wellington',
-        'Auckland',
-        'Canterbury',
-        'Otago',
-        'Waikato',
-        'Bay of Plenty',
-        'Manawatu-Wanganui',
-        'Hawke\'s Bay',
-        'Taranaki',
-        'Northland'
-    ];
+    const handleFetchRegions = async () => {
+        const response = await fetch('http://localhost:5004/api/regions', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+    
+        // remove the region suffix
+        const cleanedRegions = data.map(region => region.replace(' Region', ''));
+        setRegions(cleanedRegions);
+    };
+
+    useEffect(() => {
+        handleFetchRegions();
+    }, []);
 
     const handleRemoveRegion = (region) => {
         setSelectedRegions(selectedRegions.filter(r => r !== region));
     };
 
     const handleRegionSelect = (event, value) => {
-        if (value && !selectedRegions.includes(value)) {
-            setSelectedRegions([...selectedRegions, value]);
+        const region_name = value + " Region";
+        if (value && !selectedRegions.includes(region_name)) {
+            setSelectedRegions([...selectedRegions, region_name]);
         }
     };
 
     const handleTimeRangeChange = (event, newValue) => {
-        setTimeRange(newValue);
+        setYearRange(newValue);
     };
 
     return (
@@ -101,7 +103,7 @@ const ControlPanel = ({ onLoad }) => {
                 </Typography>
                 <Box sx={{ px: 1 }}>
                     <Slider
-                        value={timeRange}
+                        value={yearRange}
                         onChange={handleTimeRangeChange}
                         min={2003}
                         max={2025}
@@ -123,8 +125,8 @@ const ControlPanel = ({ onLoad }) => {
                         justifyContent: 'space-between',
                         color: 'text.secondary'
                     }}>
-                        <Typography variant="body2">{timeRange[0]}</Typography>
-                        <Typography variant="body2">{timeRange[1]}</Typography>
+                        <Typography variant="body2">{yearRange[0]}</Typography>
+                        <Typography variant="body2">{yearRange[1]}</Typography>
                     </Box>
                 </Box>
             </Box>

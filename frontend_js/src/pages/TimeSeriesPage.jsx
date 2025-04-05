@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import ControlPanel from '../components/timeSeriespage/ControlPanel';
 import LinegraphPanel from '../components/timeSeriespage/LinegraphPanel';
@@ -6,16 +6,35 @@ import LinegraphPanel from '../components/timeSeriespage/LinegraphPanel';
 const TimeSeriesPage = () => {
     const [graphData, setGraphData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedRegions, setSelectedRegions] = useState([]);
+    const [yearRange, setYearRange] = useState([2008, 2025]);
 
-    const handleLoad = () => {
+    const handleLoad = async () => {
         setIsLoading(true);
-        // TODO: Implement data loading logic here
-        setTimeout(() => {
-            setIsLoading(false);
-            // setGraphData(/* loaded data */);
-        }, 1000);
+        const [startYear, endYear] = yearRange;
+
+        const response = await fetch('http://localhost:5004/api/crashes/yearly-counts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ selectedRegions, startYear, endYear })
+        });
+
+        const data = await response.json();
+        
+        console.log(data);
+
+        setIsLoading(false);
     };
 
+    useEffect(() => {
+        console.log(selectedRegions);
+    }, [selectedRegions]);
+
+    useEffect(() => {
+        console.log(yearRange);
+    }, [yearRange]);
+
+    
     return (
         <Box
             sx={{
@@ -26,7 +45,7 @@ const TimeSeriesPage = () => {
                 boxSizing: 'border-box'
             }}
         >
-            <ControlPanel onLoad={handleLoad} />
+            <ControlPanel onLoad={handleLoad} selectedRegions={selectedRegions} setSelectedRegions={setSelectedRegions} yearRange={yearRange} setYearRange={setYearRange} />
             <LinegraphPanel data={graphData} isLoading={isLoading} />
         </Box>
     );
