@@ -3,7 +3,7 @@ import { Grid, Box, Typography, Button } from '@mui/material';
 
 const PredictorPage = () => {
     return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center"  className="page-content">
             {/* Outer Grid occupying 9/12 of the width, centered */}
             <Grid size={{xs:9}}>
                 <Grid container spacing={2}>

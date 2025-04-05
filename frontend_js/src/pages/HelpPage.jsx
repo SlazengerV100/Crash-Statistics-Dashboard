@@ -3,7 +3,7 @@ import { Grid, Box, Typography, Button } from '@mui/material';
 
 const HelpPage = () => {
     return(
-        <>
+        <div className="page-content">
             <Grid container justifyContent="center">
                 {/* Outer Grid occupying 9/12 of the width, centered */}
                 <Grid size={{xs:9}}>
@@ -17,7 +17,7 @@ const HelpPage = () => {
                     </Box>
                 </Grid>
             </Grid>
-        </>
+        </div>
     )
 }
 

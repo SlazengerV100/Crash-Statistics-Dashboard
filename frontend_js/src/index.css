@@ -16,3 +16,9 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+
+.page-content {
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  width: 100%;
+}

@@ -18,7 +18,7 @@ function App() {
     <>
       <Router>
         <NavBar />
-        <Routes>
+        <Routes >
           <Route path="/" element={<HomePage />} />
           <Route path="/time-series" element={<TimeSeriesPage />} />
           <Route path="/factors" element={<FactorsPage />} />
