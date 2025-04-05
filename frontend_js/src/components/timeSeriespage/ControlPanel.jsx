@@ -12,10 +12,8 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
             headers: { 'Content-Type': 'application/json' },
         });
         const data = await response.json();
-    
-        // remove the region suffix
-        const cleanedRegions = data.map(region => region.replace(' Region', ''));
-        setRegions(cleanedRegions);
+  
+        setRegions(data);
     };
 
     useEffect(() => {
@@ -27,9 +25,8 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
     };
 
     const handleRegionSelect = (event, value) => {
-        const region_name = value + " Region";
-        if (value && !selectedRegions.includes(region_name)) {
-            setSelectedRegions([...selectedRegions, region_name]);
+        if (value && !selectedRegions.includes(value)) {
+            setSelectedRegions([...selectedRegions, value]);
         }
     };
 

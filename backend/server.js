@@ -58,6 +58,7 @@ app.get('/api/vehicle-types', (req, res) => {
 // Get crash counts by regions across years
 app.post('/api/crashes/yearly-counts', (req, res) => {
     const { selectedRegions, startYear, endYear } = req.body;
+    const regions = selectedRegions.map(region => region + " Region");
 
     const start = parseInt(startYear);
     const end = parseInt(endYear);
@@ -69,8 +70,7 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
         });
     }
 
-    // Kahu can u make this better if it needs to be?
-    const placeholders = selectedRegions.map(() => '?').join(',');
+    const placeholders = regions.map(() => '?').join(',');
     const query = `
         SELECT 
             l.region_name,
@@ -84,14 +84,16 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
         ORDER BY c.crash_year, l.region_name
     `;
 
-    // Combine regions array with year parameters
-    const params = [...selectedRegions, start, end];
+    const params = [...regions, start, end];
 
     db.all(query, params, (err, rows) => {
         if (err) {
             console.error('Error fetching yearly crash counts:', err);
             res.status(500).json({ error: err.message });
-        } else {
+            return;
+        }
+
+        try {
             // Generate array of years for x-axis
             const years = Array.from(
                 { length: end - start + 1 }, 
@@ -99,8 +101,8 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
             );
 
             // Process data for Chart.js format
-            const dataByRegion = selectedRegions.reduce((acc, selectedRegions) => {
-                acc[selectedRegions] = years.reduce((yearAcc, year) => {
+            const dataByRegion = regions.reduce((acc, region) => {
+                acc[region] = years.reduce((yearAcc, year) => {
                     yearAcc[year] = 0;
                     return yearAcc;
                 }, {});
@@ -109,19 +111,24 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
 
             // Fill in actual crash counts
             rows.forEach(row => {
-                dataByRegion[row.region_name][row.crash_year] = row.crash_count;
+                if (row.region_name in dataByRegion) {
+                    dataByRegion[row.region_name][row.crash_year] = row.crash_count;
+                }
             });
 
-            // Format response for Chart.js
+            // Format response for Chart.js with consistent region names
             const response = {
                 labels: years,
-                datasets: selectedRegions.map(selectedRegions => ({
-                    label: selectedRegions,
-                    data: years.map(year => dataByRegion[selectedRegions][year])
+                datasets: regions.map(region => ({
+                    label: region.replace(' Region', ''),
+                    data: years.map(year => dataByRegion[region][year] || 0)
                 }))
             };
 
             res.json(response);
+        } catch (error) {
+            console.error('Error processing data:', error);
+            res.status(500).json({ error: 'Error processing data' });
         }
     });
 });
@@ -140,7 +147,7 @@ app.get('/api/regions', (req, res) => {
             console.error('Error fetching regions:', err);
             res.status(500).json({ error: err.message });
         } else {
-            const regions = rows.map(row => row.region_name);
+            const regions = rows.map(row => row.region_name.replace(' Region', ''));
             res.json(regions);
         }
     });

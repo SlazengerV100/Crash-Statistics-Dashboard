@@ -21,19 +21,10 @@ const TimeSeriesPage = () => {
 
         const data = await response.json();
         
-        console.log(data);
+        setGraphData(data);
 
         setIsLoading(false);
     };
-
-    useEffect(() => {
-        console.log(selectedRegions);
-    }, [selectedRegions]);
-
-    useEffect(() => {
-        console.log(yearRange);
-    }, [yearRange]);
-
     
     return (
         <Box
