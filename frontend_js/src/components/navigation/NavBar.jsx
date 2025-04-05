@@ -49,7 +49,7 @@ const NavBar = () => {
                             }
                         }}
                     >
-                        Time Series
+                        Region Comparison
                     </Button>
                     <Button 
                         color="inherit" 
