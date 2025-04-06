@@ -27,4 +27,20 @@ Create a `.env` file in your `/backend` directory with the following variables:
 In the terminal, navigate to the backend directory and run:
 ```bash
 npm install
+```
+
+### 4. **Initialize the Database:**
+   Load the database schema by running the following:
+   
+```bash
+   node loadDB.js
+```
+
+AND WAIT IT WILL TAKE A WHILE
+
+### 5. **Start server**
+    
+```bash
+    npm start
+```
 
