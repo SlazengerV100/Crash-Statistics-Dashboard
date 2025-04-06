@@ -24,7 +24,7 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
     const [lanesRange, setLanesRange] = useState([1, 8]);
 
     const handleFetchRegions = async () => {
-        const response = await fetch('http://localhost:5004/api/regions');
+        const response = await fetch('http://localhost:5000/api/regions');
         const data = await response.json();
         setRegions(data);
     };
@@ -37,11 +37,11 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
         const fetchFilterOptions = async () => {
             try {
                 // Fetch severity options
-                const severityRes = await fetch('http://localhost:5004/api/filters/severity');
+                const severityRes = await fetch('http://localhost:5000/api/filters/severity');
                 const severityData = await severityRes.json();
                 
                 // Fetch weather options
-                const weatherRes = await fetch('http://localhost:5004/api/filters/weather');
+                const weatherRes = await fetch('http://localhost:5000/api/filters/weather');
                 const weatherData = await weatherRes.json();
 
                 // Update filter options
