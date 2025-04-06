@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Autocomplete, TextField, Box, Typography, Button, IconButton, Slider, Checkbox, FormGroup, FormControlLabel, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Paper, Autocomplete, TextField, Box, Typography, Button, IconButton, Slider, Checkbox, FormGroup, FormControlLabel, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, setYearRange }) => {
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
     const [regions, setRegions] = useState([]);
     const [filters, setFilters] = useState({
-        advisory_speed: [],
-        number_of_lanes: [],
+        speed_limit: [0, 120],
+        number_of_lanes: [1, 8],
         vehicles: [],
-        severity_description: [],
-        weather_condition: []
+        severity_description: '',
+        weather_condition: ''
     });
     const [filterOptions, setFilterOptions] = useState({
         advisory_speed: [],
         number_of_lanes: [],
-        vehicles: ['bus', 'bicycle', 'moped', 'car_station_wagon'],
+        vehicles: ['bus', 'bicycle', 'moped', 'car_station_wagon', 'truck'],
         severity_description: [],
         weather_condition: []
     });
+    const [speedLimitRange, setSpeedLimitRange] = useState([0, 120]);
+    const [lanesRange, setLanesRange] = useState([1, 8]);
 
     const handleFetchRegions = async () => {
-        const response = await fetch('http://localhost:5004/api/regions', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const response = await fetch('http://localhost:5004/api/regions');
         const data = await response.json();
-  
         setRegions(data);
     };
 
@@ -35,61 +32,66 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
         handleFetchRegions();
     }, []);
 
-    useEffect(() => {
-        const fetchFilterOptions = async () => {
-            try {
-                const [
-                    advisorySpeedsRes,
-                    numberOfLanesRes,
-                    severityRes,
-                    weatherRes
-                ] = await Promise.all([
-                    fetch('http://localhost:5004/api/filters/advisory-speeds'),
-                    fetch('http://localhost:5004/api/filters/number-of-lanes'),
-                    fetch('http://localhost:5004/api/filters/severity'),
-                    fetch('http://localhost:5004/api/filters/weather')
-                ]);
-
-                if (!advisorySpeedsRes.ok || !numberOfLanesRes.ok || !severityRes.ok || !weatherRes.ok) {
-                    throw new Error('One or more requests failed');
-                }
-
-                const [
-                    advisorySpeeds,
-                    numberOfLanes,
-                    severityDescriptions,
-                    weatherConditions
-                ] = await Promise.all([
-                    advisorySpeedsRes.json(),
-                    numberOfLanesRes.json(),
-                    severityRes.json(),
-                    weatherRes.json()
-                ]);
-
-                setFilterOptions(prev => ({
-                    ...prev,
-                    advisory_speed: Array.isArray(advisorySpeeds) ? advisorySpeeds : [],
-                    number_of_lanes: Array.isArray(numberOfLanes) ? numberOfLanes : [],
-                    severity_description: Array.isArray(severityDescriptions) ? severityDescriptions : [],
-                    weather_condition: Array.isArray(weatherConditions) ? weatherConditions : []
-                }));
-            } catch (error) {
-                console.error('Error fetching filter options:', error);
-                setFilterOptions(prev => ({
-                    ...prev,
-                    advisory_speed: [],
-                    number_of_lanes: [],
-                    severity_description: [],
-                    weather_condition: []
-                }));
+    const fetchFilterOptions = async () => {
+        try {
+            const advisorySpeedsRes = await fetch('http://localhost:5004/api/filters/advisory-speeds');
+            if (!advisorySpeedsRes.ok) {
+                throw new Error(`Advisory speeds request failed with status ${advisorySpeedsRes.status}`);
             }
-        };
+            const advisorySpeeds = await advisorySpeedsRes.json();
+            console.log('Fetched advisory speeds:', advisorySpeeds);
 
+            setFilterOptions(prev => ({
+                ...prev,
+                advisory_speed: Array.isArray(advisorySpeeds) ? advisorySpeeds : []
+            }));
+
+            const numberOfLanesRes = await fetch('http://localhost:5004/api/filters/number-of-lanes');
+            if (!numberOfLanesRes.ok) {
+                throw new Error(`Number of lanes request failed with status ${numberOfLanesRes.status}`);
+            }
+            const numberOfLanes = await numberOfLanesRes.json();
+            console.log('Fetched number of lanes:', numberOfLanes);
+
+            setFilterOptions(prev => ({
+                ...prev,
+                number_of_lanes: Array.isArray(numberOfLanes) ? numberOfLanes : []
+            }));
+
+            const severityRes = await fetch('http://localhost:5004/api/filters/severity');
+            if (!severityRes.ok) {
+                throw new Error(`Severity request failed with status ${severityRes.status}`);
+            }
+            const severityDescriptions = await severityRes.json();
+            console.log('Fetched severity descriptions:', severityDescriptions);
+
+            setFilterOptions(prev => ({
+                ...prev,
+                severity_description: Array.isArray(severityDescriptions) ? severityDescriptions : []
+            }));
+
+            const weatherRes = await fetch('http://localhost:5004/api/filters/weather');
+            if (!weatherRes.ok) {
+                throw new Error(`Weather request failed with status ${weatherRes.status}`);
+            }
+            const weatherConditions = await weatherRes.json();
+            console.log('Fetched weather conditions:', weatherConditions);
+
+            setFilterOptions(prev => ({
+                ...prev,
+                weather_condition: Array.isArray(weatherConditions) ? weatherConditions : []
+            }));
+        } catch (error) {
+            console.error('Error fetching advisory speeds:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchFilterOptions();
     }, []);
 
     useEffect(() => {
-        console.log('Filter options updated:', filterOptions);
+        console.log('Current filter options:', filterOptions);
     }, [filterOptions]);
 
     const handleRemoveRegion = (region) => {
@@ -120,11 +122,8 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
                 p: 2.5,
                 width: 300,
                 height: '100%',
-                maxHeight: '100%',
-                overflowY: 'auto',
                 display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden'
+                flexDirection: 'column'
             }}
         >
             <Box sx={{ mb: 2.5 }}>
@@ -180,21 +179,10 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
                 <Box sx={{ px: 1 }}>
                     <Slider
                         value={yearRange}
-                        onChange={handleTimeRangeChange}
+                        onChange={(e, newValue) => setYearRange(newValue)}
                         min={2003}
                         max={2025}
                         valueLabelDisplay="auto"
-                        sx={{
-                            '& .MuiSlider-thumb': {
-                                color: 'primary.main',
-                            },
-                            '& .MuiSlider-track': {
-                                color: 'primary.main',
-                            },
-                            '& .MuiSlider-rail': {
-                                color: 'grey.300',
-                            },
-                        }}
                     />
                     <Box sx={{ 
                         display: 'flex', 
@@ -207,159 +195,191 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
                 </Box>
             </Box>
 
-            <Box sx={{ mb: 2.5 }}>
-                <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                    endIcon={<ExpandMoreIcon />}
+            <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                sx={{ mb: 2 }}
+            >
+                {isFiltersOpen ? 'Hide Filters' : 'Show Filters'}
+            </Button>
+
+            {isFiltersOpen && (
+                <Box 
+                    sx={{ 
+                        flex: 1,
+                        overflowY: 'auto',
+                        mb: 2
+                    }}
                 >
-                    Filters
-                </Button>
-                {isFiltersOpen && (
-                    <Paper sx={{ mt: 1, p: 2 }}>
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Advisory Speed</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormGroup>
-                                    {filterOptions.advisory_speed.map((speed) => (
-                                        <FormControlLabel
-                                            key={speed}
-                                            control={
-                                                <Checkbox
-                                                    checked={filters.advisory_speed.includes(speed)}
-                                                    onChange={(e) => {
-                                                        const newValue = e.target.checked
-                                                            ? [...filters.advisory_speed, speed]
-                                                            : filters.advisory_speed.filter(s => s !== speed);
-                                                        handleFilterChange('advisory_speed', newValue);
-                                                    }}
-                                                />
-                                            }
-                                            label={`${speed} km/h`}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </AccordionDetails>
-                        </Accordion>
+                    <Box sx={{ mb: 3 }}>
+                        <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                            Speed Limit
+                        </Typography>
+                        <Box sx={{ px: 3 }}>
+                            <Slider
+                                value={speedLimitRange}
+                                onChange={(e, newValue) => {
+                                    setSpeedLimitRange(newValue);
+                                    handleFilterChange('speed_limit', newValue);
+                                }}
+                                min={0}
+                                max={120}
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={value => `${value} km/h`}
+                                sx={{
+                                    '& .MuiSlider-thumb': {
+                                        color: 'primary.main',
+                                    },
+                                    '& .MuiSlider-track': {
+                                        color: 'primary.main',
+                                    },
+                                    '& .MuiSlider-rail': {
+                                        color: 'grey.300',
+                                    },
+                                }}
+                            />
+                            <Box sx={{ 
+                                display: 'flex', 
+                                justifyContent: 'space-between',
+                                color: 'text.secondary',
+                                mt: 1
+                            }}>
+                                <Typography variant="body2">{speedLimitRange[0]} km/h</Typography>
+                                <Typography variant="body2">{speedLimitRange[1]} km/h</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
 
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Number of Lanes</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormGroup>
-                                    {filterOptions.number_of_lanes.map((lanes) => (
-                                        <FormControlLabel
-                                            key={lanes}
-                                            control={
-                                                <Checkbox
-                                                    checked={filters.number_of_lanes.includes(lanes)}
-                                                    onChange={(e) => {
-                                                        const newValue = e.target.checked
-                                                            ? [...filters.number_of_lanes, lanes]
-                                                            : filters.number_of_lanes.filter(l => l !== lanes);
-                                                        handleFilterChange('number_of_lanes', newValue);
-                                                    }}
-                                                />
-                                            }
-                                            label={`${lanes} lanes`}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </AccordionDetails>
-                        </Accordion>
+                    <Box sx={{ mb: 3 }}>
+                        <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                            Number of Lanes
+                        </Typography>
+                        <Box sx={{ px: 3 }}>
+                            <Slider
+                                value={lanesRange}
+                                onChange={(e, newValue) => {
+                                    setLanesRange(newValue);
+                                    handleFilterChange('number_of_lanes', newValue);
+                                }}
+                                min={1}
+                                max={8}
+                                step={1}
+                                marks
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={value => `${value} lanes`}
+                                sx={{
+                                    '& .MuiSlider-thumb': {
+                                        color: 'primary.main',
+                                    },
+                                    '& .MuiSlider-track': {
+                                        color: 'primary.main',
+                                    },
+                                    '& .MuiSlider-rail': {
+                                        color: 'grey.300',
+                                    },
+                                    '& .MuiSlider-mark': {
+                                        backgroundColor: '#bfbfbf',
+                                        height: 8,
+                                    },
+                                    '& .MuiSlider-markActive': {
+                                        backgroundColor: '#fff',
+                                    }
+                                }}
+                            />
+                            <Box sx={{ 
+                                display: 'flex', 
+                                justifyContent: 'space-between',
+                                color: 'text.secondary',
+                                mt: 1
+                            }}>
+                                <Typography variant="body2">{lanesRange[0]} lanes</Typography>
+                                <Typography variant="body2">{lanesRange[1]} lanes</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
 
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Vehicles Present</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormGroup>
-                                    {filterOptions.vehicles.map((vehicle) => (
-                                        <FormControlLabel
-                                            key={vehicle}
-                                            control={
-                                                <Checkbox
-                                                    checked={filters.vehicles.includes(vehicle)}
-                                                    onChange={(e) => {
-                                                        const newValue = e.target.checked
-                                                            ? [...filters.vehicles, vehicle]
-                                                            : filters.vehicles.filter(v => v !== vehicle);
-                                                        handleFilterChange('vehicles', newValue);
-                                                    }}
-                                                />
-                                            }
-                                            label={vehicle.replace(/_/g, ' ')}
+                    <Box sx={{ mb: 3 }}>
+                        <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                            Vehicles Present
+                        </Typography>
+                        <FormGroup>
+                            {filterOptions.vehicles.map((vehicle) => (
+                                <FormControlLabel
+                                    key={vehicle}
+                                    control={
+                                        <Checkbox
+                                            checked={filters.vehicles.includes(vehicle)}
+                                            onChange={(e) => {
+                                                const newValue = e.target.checked
+                                                    ? [...filters.vehicles, vehicle]
+                                                    : filters.vehicles.filter(v => v !== vehicle);
+                                                handleFilterChange('vehicles', newValue);
+                                            }}
                                         />
-                                    ))}
-                                </FormGroup>
-                            </AccordionDetails>
-                        </Accordion>
+                                    }
+                                    label={vehicle.replace(/_/g, ' ')}
+                                />
+                            ))}
+                        </FormGroup>
+                    </Box>
 
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Crash Severity</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormGroup>
-                                    {filterOptions.severity_description.map((severity) => (
-                                        <FormControlLabel
-                                            key={severity}
-                                            control={
-                                                <Checkbox
-                                                    checked={filters.severity_description.includes(severity)}
-                                                    onChange={(e) => {
-                                                        const newValue = e.target.checked
-                                                            ? [...filters.severity_description, severity]
-                                                            : filters.severity_description.filter(s => s !== severity);
-                                                        handleFilterChange('severity_description', newValue);
-                                                    }}
-                                                />
-                                            }
-                                            label={severity}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </AccordionDetails>
-                        </Accordion>
+                    <Box sx={{ mb: 3 }}>
+                        <FormControl fullWidth size="small">
+                            <InputLabel id="severity-select-label">Crash Severity</InputLabel>
+                            <Select
+                                labelId="severity-select-label"
+                                id="severity-select"
+                                value={filters.severity_description}
+                                label="Crash Severity"
+                                onChange={(e) => handleFilterChange('severity_description', e.target.value)}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {filterOptions.severity_description.map((severity) => (
+                                    <MenuItem key={severity} value={severity}>
+                                        {severity}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
 
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Weather Conditions</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormGroup>
-                                    {Array.isArray(filterOptions.weather_condition) && filterOptions.weather_condition.map((weather) => (
-                                        <FormControlLabel
-                                            key={weather}
-                                            control={
-                                                <Checkbox
-                                                    checked={filters.weather_condition.includes(weather)}
-                                                    onChange={(e) => {
-                                                        const newValue = e.target.checked
-                                                            ? [...filters.weather_condition, weather]
-                                                            : filters.weather_condition.filter(w => w !== weather);
-                                                        handleFilterChange('weather_condition', newValue);
-                                                    }}
-                                                />
-                                            }
-                                            label={weather}
-                                        />
-                                    ))}
-                                </FormGroup>
-                            </AccordionDetails>
-                        </Accordion>
-                    </Paper>
-                )}
-            </Box>
+                    <Box sx={{ mb: 3 }}>
+                        <FormControl fullWidth size="small">
+                            <InputLabel id="weather-select-label">Weather Condition</InputLabel>
+                            <Select
+                                labelId="weather-select-label"
+                                id="weather-select"
+                                value={filters.weather_condition}
+                                label="Weather Condition"
+                                onChange={(e) => handleFilterChange('weather_condition', e.target.value)}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {filterOptions.weather_condition.map((weather) => (
+                                    <MenuItem key={weather} value={weather}>
+                                        {weather}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </Box>
+            )}
 
             <Button
                 variant="contained"
                 onClick={() => onLoad(filters)}
-                sx={{ mt: 'auto' }}
+                sx={{ 
+                    mt: 'auto',
+                    bgcolor: 'primary.main',
+                    '&:hover': {
+                        bgcolor: 'primary.dark'
+                    }
+                }}
             >
                 Load
             </Button>

@@ -57,23 +57,8 @@ app.get('/api/vehicle-types', (req, res) => {
 
 // Get crash counts by regions across years
 app.post('/api/crashes/yearly-counts', (req, res) => {
-    const { 
-        selectedRegions, 
-        startYear, 
-        endYear,
-        filters
-    } = req.body;
+    const { selectedRegions, startYear, endYear, filters } = req.body;
     const regions = selectedRegions.map(region => region + " Region");
-
-    const start = parseInt(startYear);
-    const end = parseInt(endYear);
-
-    // Validate years
-    if (start > end) {
-        return res.status(400).json({ 
-            error: 'Invalid year range. startYear must be less than or equal to endYear'
-        });
-    }
 
     let query = `
         SELECT 
@@ -85,37 +70,45 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
         JOIN crash_stats cs ON c.id = cs.crash_id
         JOIN crash_weather cw ON c.id = cw.crash_id
         WHERE l.region_name IN (${regions.map(() => '?').join(',')})
-        AND c.crash_year >= ? AND c.crash_year <= ?
-    `;
+        AND c.crash_year >= ? AND c.crash_year <= ?`;
 
-    const params = [...regions, start, end];
+    const params = [...regions, startYear, endYear];
 
-    // Add filter conditions
     if (filters) {
-        if (filters.advisory_speed) {
-            query += ' AND cs.advisory_speed IN (' + filters.advisory_speed.map(() => '?').join(',') + ')';
-            params.push(...filters.advisory_speed);
+        // Speed limit filter
+        if (filters.speed_limit && filters.speed_limit.length === 2) {
+            const [minSpeed, maxSpeed] = filters.speed_limit;
+            query += ' AND c.speed_limit >= ? AND c.speed_limit <= ?';
+            params.push(minSpeed, maxSpeed);
         }
-        if (filters.number_of_lanes) {
-            query += ' AND cs.number_of_lanes IN (' + filters.number_of_lanes.map(() => '?').join(',') + ')';
-            params.push(...filters.number_of_lanes);
+
+        // Number of lanes filter
+        if (filters.number_of_lanes && filters.number_of_lanes.length === 2) {
+            const [minLanes, maxLanes] = filters.number_of_lanes;
+            query += ' AND cs.number_of_lanes >= ? AND cs.number_of_lanes <= ?';
+            params.push(minLanes, maxLanes);
         }
-        if (filters.vehicles) {
-            const vehicleConditions = [];
-            filters.vehicles.forEach(vehicle => {
-                vehicleConditions.push('cs.' + vehicle + ' > 0');
+
+        // Vehicle filter
+        if (filters.vehicles && filters.vehicles.length > 0) {
+            const vehicleConditions = filters.vehicles.map(vehicle => {
+                return `cs.${vehicle} > 0`;
             });
             if (vehicleConditions.length > 0) {
-                query += ' AND (' + vehicleConditions.join(' OR ') + ')';
+                query += ` AND (${vehicleConditions.join(' OR ')})`;
             }
         }
-        if (filters.severity_description) {
-            query += ' AND c.severity_description IN (' + filters.severity_description.map(() => '?').join(',') + ')';
-            params.push(...filters.severity_description);
-        }
+
+        // Updated Weather condition filter for single selection
         if (filters.weather_condition) {
-            query += ' AND cw.weather_condition IN (' + filters.weather_condition.map(() => '?').join(',') + ')';
-            params.push(...filters.weather_condition);
+            query += ` AND (cw.weather_a = ? OR cw.weather_b = ?)`;
+            params.push(filters.weather_condition, filters.weather_condition);
+        }
+
+        // Updated Severity filter for single selection
+        if (filters.severity_description) {
+            query += ` AND c.severity_description = ?`;
+            params.push(filters.severity_description);
         }
     }
 
@@ -131,8 +124,8 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
         try {
             // Generate array of years for x-axis
             const years = Array.from(
-                { length: end - start + 1 }, 
-                (_, i) => start + i
+                { length: endYear - startYear + 1 }, 
+                (_, i) => startYear + i
             );
 
             // Process data for Chart.js format
@@ -188,18 +181,6 @@ app.get('/api/regions', (req, res) => {
     });
 });
 
-// Add these new endpoints to fetch filter options
-app.get('/api/filters/advisory-speeds', (req, res) => {
-    const query = 'SELECT DISTINCT advisory_speed FROM crash_stats WHERE advisory_speed IS NOT NULL ORDER BY advisory_speed';
-    db.all(query, (err, rows) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-        } else {
-            res.json(rows.map(row => row.advisory_speed));
-        }
-    });
-});
-
 app.get('/api/filters/number-of-lanes', (req, res) => {
     const query = 'SELECT DISTINCT number_of_lanes FROM crash_stats WHERE number_of_lanes IS NOT NULL ORDER BY number_of_lanes';
     db.all(query, (err, rows) => {
@@ -223,15 +204,17 @@ app.get('/api/filters/severity', (req, res) => {
 });
 
 app.get('/api/filters/weather', (req, res) => {
-    const query = 'SELECT DISTINCT weather_condition FROM crash_weather WHERE weather_condition IS NOT NULL ORDER BY weather_condition';
+    const query = `
+        SELECT DISTINCT wc.weather_condition 
+        FROM weather_conditions wc
+        ORDER BY wc.weather_condition`;
+        
     db.all(query, (err, rows) => {
         if (err) {
             console.error('Error fetching weather conditions:', err);
             res.status(500).json({ error: err.message });
         } else {
-            // Ensure we're sending an array of weather conditions
             const weatherConditions = rows.map(row => row.weather_condition);
-            console.log('Weather conditions:', weatherConditions); // Debug log
             res.json(weatherConditions);
         }
     });
