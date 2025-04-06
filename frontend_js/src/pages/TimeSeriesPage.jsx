@@ -9,7 +9,7 @@ const TimeSeriesPage = () => {
     const [selectedRegions, setSelectedRegions] = useState([]);
     const [yearRange, setYearRange] = useState([2008, 2025]);
 
-    const handleLoad = async (filters) => {
+    const handleLoad = async (filters, isPerCapita) => {
         setIsLoading(true);
         const [startYear, endYear] = yearRange;
 
@@ -20,14 +20,16 @@ const TimeSeriesPage = () => {
                 selectedRegions, 
                 startYear, 
                 endYear,
-                filters: Object.fromEntries(
-                    Object.entries(filters).filter(([_, value]) => value.length > 0)
-                )
+                filters,
+                isPerCapita
             })
         });
 
         const data = await response.json();
-        setGraphData(data);
+        setGraphData({
+            ...data,
+            isPerCapita
+        });
         setIsLoading(false);
     };
     

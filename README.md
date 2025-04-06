@@ -94,3 +94,66 @@ Each member submits a **2,500-3,000 word report** covering:
 | Visualization & Development Tools Critique | 25% |
 
 ---
+
+## Adding Population Data to Region Table
+
+To enable per capita crash statistics, you'll need to add population data to the region table. Follow these steps:
+
+1. Open SQLite database (using SQLite CLI or your preferred SQLite tool)
+```bash
+sqlite3 your_database.db
+```
+
+2. Add the population column to the region table:
+```sql
+ALTER TABLE region ADD COLUMN population INTEGER;
+```
+
+3. Insert population data for each region:
+```sql
+UPDATE region 
+SET population = 
+    CASE region_name
+        WHEN 'Auckland Region' THEN 1718982
+        WHEN 'Bay of Plenty Region' THEN 355890
+        WHEN 'Canterbury Region' THEN 651060
+        WHEN 'Gisborne Region' THEN 52110
+        WHEN 'Hawke''s Bay Region' THEN 178470
+        WHEN 'Manawatu-Whanganui Region' THEN 238797
+        WHEN 'Marlborough Region' THEN 51730
+        WHEN 'Nelson Region' THEN 54590
+        WHEN 'Northland Region' THEN 201500
+        WHEN 'Otago Region' THEN 246740
+        WHEN 'Southland Region' THEN 102400
+        WHEN 'Taranaki Region' THEN 123010
+        WHEN 'Tasman Region' THEN 57240
+        WHEN 'Waikato Region' THEN 496710
+        WHEN 'Wellington Region' THEN 547000
+        WHEN 'West Coast Region' THEN 32550
+    END;
+```
+
+4. Verify the data was added correctly:
+```sql
+SELECT region_name, population FROM region ORDER BY region_name;
+```
+
+### Population Data Source
+Population numbers are based on 2022/2023 estimates from Stats NZ. If you need to update these numbers, modify the values in the UPDATE statement above.
+
+### Troubleshooting
+If you encounter any issues:
+1. Make sure your database is writable
+2. Verify region names match exactly (including 'Region' suffix)
+3. Check that the population column was added successfully:
+```sql
+.schema region
+```
+
+### Using Per Capita Data
+Once the population data is added:
+1. The toggle switch for "Crashes per 100,000 people" will be functional
+2. Per capita calculations will use these population values
+3. The graph will automatically update to show crashes per 100,000 people when toggled
+
+Note: If you need to update population numbers in the future, you can run the UPDATE statement again with modified values.

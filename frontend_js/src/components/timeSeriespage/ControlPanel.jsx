@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Autocomplete, TextField, Box, Typography, Button, IconButton, Slider, Checkbox, FormGroup, FormControlLabel, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Paper, Autocomplete, TextField, Box, Typography, Button, IconButton, Slider, Checkbox, FormGroup, FormControlLabel, Select, MenuItem, FormControl, InputLabel, Switch } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, setYearRange }) => {
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
     const [regions, setRegions] = useState([]);
+    const [isPerCapita, setIsPerCapita] = useState(false);
     const [filters, setFilters] = useState({
         speed_limit: [0, 120],
         number_of_lanes: [1, 8],
@@ -162,6 +163,23 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
                         <Typography variant="body2">{yearRange[1]}</Typography>
                     </Box>
                 </Box>
+            </Box>
+
+            <Box sx={{ mb: 2.5 }}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isPerCapita}
+                            onChange={(e) => setIsPerCapita(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label={
+                        <Typography variant="body2">
+                            {isPerCapita ? "Crashes per 100,000 people" : "Total crashes"}
+                        </Typography>
+                    }
+                />
             </Box>
 
             <Button
@@ -341,7 +359,7 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
 
             <Button
                 variant="contained"
-                onClick={() => onLoad(filters)}
+                onClick={() => onLoad(filters, isPerCapita)}
                 sx={{ 
                     mt: 'auto',
                     bgcolor: 'primary.main',
