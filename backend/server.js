@@ -57,34 +57,64 @@ app.get('/api/vehicle-types', (req, res) => {
 
 // Get crash counts by regions across years
 app.post('/api/crashes/yearly-counts', (req, res) => {
-    const { selectedRegions, startYear, endYear } = req.body;
+    const { selectedRegions, startYear, endYear, filters, isPerCapita } = req.body;
     const regions = selectedRegions.map(region => region + " Region");
 
-    const start = parseInt(startYear);
-    const end = parseInt(endYear);
-
-    // Validate years
-    if (start > end) {
-        return res.status(400).json({ 
-            error: 'Invalid year range. startYear must be less than or equal to endYear'
-        });
-    }
-
-    const placeholders = regions.map(() => '?').join(',');
-    const query = `
+    let query = `
         SELECT 
             l.region_name,
             c.crash_year,
-            COUNT(*) as crash_count
+            COUNT(*) as crash_count,
+            r.population
         FROM crashes c
         JOIN location l ON c.id = l.crash_id
-        WHERE l.region_name IN (${placeholders})
-        AND c.crash_year >= ? AND c.crash_year <= ?
-        GROUP BY l.region_name, c.crash_year
-        ORDER BY c.crash_year, l.region_name
-    `;
+        JOIN crash_stats cs ON c.id = cs.crash_id
+        JOIN crash_weather cw ON c.id = cw.crash_id
+        JOIN region r ON l.region_name = r.region_name
+        WHERE l.region_name IN (${regions.map(() => '?').join(',')})
+        AND c.crash_year >= ? AND c.crash_year <= ?`;
 
-    const params = [...regions, start, end];
+    const params = [...regions, startYear, endYear];
+
+    if (filters) {
+        // Speed limit filter
+        if (filters.speed_limit && filters.speed_limit.length === 2) {
+            const [minSpeed, maxSpeed] = filters.speed_limit;
+            query += ' AND c.speed_limit >= ? AND c.speed_limit <= ?';
+            params.push(minSpeed, maxSpeed);
+        }
+
+        // Number of lanes filter
+        if (filters.number_of_lanes && filters.number_of_lanes.length === 2) {
+            const [minLanes, maxLanes] = filters.number_of_lanes;
+            query += ' AND cs.number_of_lanes >= ? AND cs.number_of_lanes <= ?';
+            params.push(minLanes, maxLanes);
+        }
+
+        // Vehicle filter
+        if (filters.vehicles && filters.vehicles.length > 0) {
+            const vehicleConditions = filters.vehicles.map(vehicle => {
+                return `cs.${vehicle} > 0`;
+            });
+            if (vehicleConditions.length > 0) {
+                query += ` AND (${vehicleConditions.join(' OR ')})`;
+            }
+        }
+
+        // Updated Weather condition filter for single selection
+        if (filters.weather_condition) {
+            query += ` AND (cw.weather_a = ? OR cw.weather_b = ?)`;
+            params.push(filters.weather_condition, filters.weather_condition);
+        }
+
+        // Updated Severity filter for single selection
+        if (filters.severity_description) {
+            query += ` AND c.severity_description = ?`;
+            params.push(filters.severity_description);
+        }
+    }
+
+    query += ' GROUP BY l.region_name, c.crash_year, r.population ORDER BY c.crash_year, l.region_name';
 
     db.all(query, params, (err, rows) => {
         if (err) {
@@ -94,35 +124,36 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
         }
 
         try {
-            // Generate array of years for x-axis
             const years = Array.from(
-                { length: end - start + 1 }, 
-                (_, i) => start + i
+                { length: endYear - startYear + 1 }, 
+                (_, i) => startYear + i
             );
 
-            // Process data for Chart.js format
-            const dataByRegion = regions.reduce((acc, region) => {
-                acc[region] = years.reduce((yearAcc, year) => {
-                    yearAcc[year] = 0;
-                    return yearAcc;
-                }, {});
-                return acc;
-            }, {});
+            const dataByRegion = {};
+            regions.forEach(region => {
+                dataByRegion[region] = {};
+                years.forEach(year => {
+                    dataByRegion[region][year] = 0;
+                });
+            });
 
             // Fill in actual crash counts
             rows.forEach(row => {
                 if (row.region_name in dataByRegion) {
-                    dataByRegion[row.region_name][row.crash_year] = row.crash_count;
+                    const value = isPerCapita 
+                        ? (row.crash_count / row.population) * 100000 // Convert to per 100,000 people
+                        : row.crash_count;
+                    dataByRegion[row.region_name][row.crash_year] = Number(value.toFixed(2));
                 }
             });
 
-            // Format response for Chart.js with consistent region names
             const response = {
                 labels: years,
                 datasets: regions.map(region => ({
                     label: region.replace(' Region', ''),
                     data: years.map(year => dataByRegion[region][year] || 0)
-                }))
+                })),
+                isPerCapita
             };
 
             res.json(response);
@@ -152,6 +183,60 @@ app.get('/api/regions', (req, res) => {
         }
     });
 });
+
+app.get('/api/filters/number-of-lanes', (req, res) => {
+    const query = 'SELECT DISTINCT number_of_lanes FROM crash_stats WHERE number_of_lanes IS NOT NULL ORDER BY number_of_lanes';
+    db.all(query, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json(rows.map(row => row.number_of_lanes));
+        }
+    });
+});
+
+app.get('/api/filters/severity', (req, res) => {
+    const query = `
+        SELECT DISTINCT severity_description 
+        FROM crashes 
+        WHERE severity_description IS NOT NULL 
+        ORDER BY severity_description`;
+    
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error fetching severity descriptions:', err);
+            res.status(500).json({ error: err.message });
+        } else {
+            const severities = rows.map(row => row.severity_description);
+            console.log('Severities found:', severities); // Debug log
+            res.json(severities);
+        }
+    });
+});
+
+app.get('/api/filters/weather', (req, res) => {
+    const query = `
+        SELECT DISTINCT weather_a as condition
+        FROM crash_weather
+        WHERE weather_a IS NOT NULL
+        UNION
+        SELECT DISTINCT weather_b as condition
+        FROM crash_weather
+        WHERE weather_b IS NOT NULL
+        ORDER BY condition`;
+    
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error fetching weather conditions:', err);
+            res.status(500).json({ error: err.message });
+        } else {
+            const conditions = rows.map(row => row.condition);
+            console.log('Weather conditions found:', conditions); // Debug log
+            res.json(conditions);
+        }
+    });
+});
+
 
 const server = app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

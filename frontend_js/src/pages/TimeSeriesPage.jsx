@@ -9,20 +9,27 @@ const TimeSeriesPage = () => {
     const [selectedRegions, setSelectedRegions] = useState([]);
     const [yearRange, setYearRange] = useState([2008, 2025]);
 
-    const handleLoad = async () => {
+    const handleLoad = async (filters, isPerCapita) => {
         setIsLoading(true);
         const [startYear, endYear] = yearRange;
 
-        const response = await fetch('http://localhost:5004/api/crashes/yearly-counts', {
+        const response = await fetch('http://localhost:5000/api/crashes/yearly-counts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ selectedRegions, startYear, endYear })
+            body: JSON.stringify({ 
+                selectedRegions, 
+                startYear, 
+                endYear,
+                filters,
+                isPerCapita
+            })
         });
 
         const data = await response.json();
-        
-        setGraphData(data);
-
+        setGraphData({
+            ...data,
+            isPerCapita
+        });
         setIsLoading(false);
     };
     

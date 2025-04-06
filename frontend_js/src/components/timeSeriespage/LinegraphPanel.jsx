@@ -63,7 +63,7 @@ const LinegraphPanel = ({ data, isLoading }) => {
                 beginAtZero: true,
                 title: {
                     display: true,
-                    text: 'Number of Crashes',
+                    text: data?.isPerCapita ? 'Crashes per 100,000 people' : 'Number of Crashes',
                     font: {
                         size: 14
                     }
