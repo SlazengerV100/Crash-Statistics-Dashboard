@@ -17,7 +17,7 @@ Create a `.env` file in your `/backend` directory with the following variables:
 
 | Variable Name    | Description                                  |
 |------------------|----------------------------------------------|
-| `PORT`           | Port number for the server to listen on      |
+| `PORT`           | 5000      |
 | `DATABASE_PATH`  | Path to the SQLite database file             |
 | `GEOJSON_PATH`   | Path to the GeoJSON (now `.json`) data file  |
 
