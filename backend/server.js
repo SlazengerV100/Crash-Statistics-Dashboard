@@ -193,32 +193,47 @@ app.get('/api/filters/number-of-lanes', (req, res) => {
 });
 
 app.get('/api/filters/severity', (req, res) => {
-    const query = 'SELECT DISTINCT severity_description FROM crashes WHERE severity_description IS NOT NULL ORDER BY severity_description';
+    const query = `
+        SELECT DISTINCT severity_description 
+        FROM crashes 
+        WHERE severity_description IS NOT NULL 
+        ORDER BY severity_description`;
+    
     db.all(query, (err, rows) => {
         if (err) {
+            console.error('Error fetching severity descriptions:', err);
             res.status(500).json({ error: err.message });
         } else {
-            res.json(rows.map(row => row.severity_description));
+            const severities = rows.map(row => row.severity_description);
+            console.log('Severities found:', severities); // Debug log
+            res.json(severities);
         }
     });
 });
 
 app.get('/api/filters/weather', (req, res) => {
     const query = `
-        SELECT DISTINCT wc.weather_condition 
-        FROM weather_conditions wc
-        ORDER BY wc.weather_condition`;
-        
+        SELECT DISTINCT weather_a as condition
+        FROM crash_weather
+        WHERE weather_a IS NOT NULL
+        UNION
+        SELECT DISTINCT weather_b as condition
+        FROM crash_weather
+        WHERE weather_b IS NOT NULL
+        ORDER BY condition`;
+    
     db.all(query, (err, rows) => {
         if (err) {
             console.error('Error fetching weather conditions:', err);
             res.status(500).json({ error: err.message });
         } else {
-            const weatherConditions = rows.map(row => row.weather_condition);
-            res.json(weatherConditions);
+            const conditions = rows.map(row => row.condition);
+            console.log('Weather conditions found:', conditions); // Debug log
+            res.json(conditions);
         }
     });
 });
+
 
 const server = app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

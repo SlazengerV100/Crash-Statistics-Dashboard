@@ -32,61 +32,30 @@ const ControlPanel = ({ onLoad, selectedRegions, setSelectedRegions, yearRange, 
         handleFetchRegions();
     }, []);
 
-    const fetchFilterOptions = async () => {
-        try {
-            const advisorySpeedsRes = await fetch('http://localhost:5004/api/filters/advisory-speeds');
-            if (!advisorySpeedsRes.ok) {
-                throw new Error(`Advisory speeds request failed with status ${advisorySpeedsRes.status}`);
-            }
-            const advisorySpeeds = await advisorySpeedsRes.json();
-            console.log('Fetched advisory speeds:', advisorySpeeds);
-
-            setFilterOptions(prev => ({
-                ...prev,
-                advisory_speed: Array.isArray(advisorySpeeds) ? advisorySpeeds : []
-            }));
-
-            const numberOfLanesRes = await fetch('http://localhost:5004/api/filters/number-of-lanes');
-            if (!numberOfLanesRes.ok) {
-                throw new Error(`Number of lanes request failed with status ${numberOfLanesRes.status}`);
-            }
-            const numberOfLanes = await numberOfLanesRes.json();
-            console.log('Fetched number of lanes:', numberOfLanes);
-
-            setFilterOptions(prev => ({
-                ...prev,
-                number_of_lanes: Array.isArray(numberOfLanes) ? numberOfLanes : []
-            }));
-
-            const severityRes = await fetch('http://localhost:5004/api/filters/severity');
-            if (!severityRes.ok) {
-                throw new Error(`Severity request failed with status ${severityRes.status}`);
-            }
-            const severityDescriptions = await severityRes.json();
-            console.log('Fetched severity descriptions:', severityDescriptions);
-
-            setFilterOptions(prev => ({
-                ...prev,
-                severity_description: Array.isArray(severityDescriptions) ? severityDescriptions : []
-            }));
-
-            const weatherRes = await fetch('http://localhost:5004/api/filters/weather');
-            if (!weatherRes.ok) {
-                throw new Error(`Weather request failed with status ${weatherRes.status}`);
-            }
-            const weatherConditions = await weatherRes.json();
-            console.log('Fetched weather conditions:', weatherConditions);
-
-            setFilterOptions(prev => ({
-                ...prev,
-                weather_condition: Array.isArray(weatherConditions) ? weatherConditions : []
-            }));
-        } catch (error) {
-            console.error('Error fetching advisory speeds:', error);
-        }
-    };
-
     useEffect(() => {
+        const fetchFilterOptions = async () => {
+            try {
+                // Fetch severity options
+                const severityRes = await fetch('http://localhost:5004/api/filters/severity');
+                const severityData = await severityRes.json();
+                
+                // Fetch weather options
+                const weatherRes = await fetch('http://localhost:5004/api/filters/weather');
+                const weatherData = await weatherRes.json();
+
+                // Update filter options
+                setFilterOptions(prev => ({
+                    ...prev,
+                    severity_description: severityData,
+                    weather_condition: weatherData
+                }));
+
+                console.log('Loaded filter options:', { severityData, weatherData }); // Debug log
+            } catch (error) {
+                console.error('Error fetching filter options:', error);
+            }
+        };
+
         fetchFilterOptions();
     }, []);
 
