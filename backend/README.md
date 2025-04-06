@@ -13,11 +13,11 @@ Before starting, ensure you have the crash data GeoJSON file. If you don't alrea
 
 2. **Set Up the Environment Variables:**
     - add a .env file to your `/backend` directory
-    | Variable Name | Description | Default Value |
-    |--------------|-------------|---------------|
-    | `PORT` | Port number for the server to listen on | 5002 |
-    | `DATABASE_PATH` | Path to the SQLite database file | ./my_database.db |
-    | `GEONJSON_PATH` | Path to the GeoJSON data file | ./Crash_Analysis_System_(CAS)_data.geojson |
+    | Variable Name | Description |
+    |--------------|-------------|
+    | `PORT` | Port number for the server to listen on |
+    | `DATABASE_PATH` | Path to the SQLite database file |
+    | `GEONJSON_PATH` | Path to the GeoJSON data file |
 
 3. **Install Dependencies:**
    cd to the backend and Run the following command to install required packages:
@@ -30,3 +30,8 @@ Before starting, ensure you have the crash data GeoJSON file. If you don't alrea
    node loadDB.js
    ```
    AND WAIT IT WILL TAKE A WHILE
+
+5. **Start server**
+```bash
+npm start
+```
