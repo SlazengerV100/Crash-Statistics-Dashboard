@@ -13,7 +13,7 @@ const TimeSeriesPage = () => {
         setIsLoading(true);
         const [startYear, endYear] = yearRange;
 
-        const response = await fetch('http://localhost:5004/api/crashes/yearly-counts', {
+        const response = await fetch('http://localhost:5000/api/crashes/yearly-counts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
