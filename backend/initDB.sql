@@ -175,3 +175,24 @@ CREATE TABLE IF NOT EXISTS crash_stats (
                                            FOREIGN KEY (holiday) REFERENCES holidays(holiday),
                                            FOREIGN KEY (crash_id) REFERENCES crashes(id)
 );
+
+CREATE TABLE IF NOT EXISTS vehicle_crash_stats
+(
+    crash_id          INTEGER PRIMARY KEY,
+    bicycle           INTEGER DEFAULT 0,
+    bus               INTEGER DEFAULT 0,
+    car_station_wagon INTEGER DEFAULT 0,
+    moped             INTEGER DEFAULT 0,
+    motorcycle         INTEGER DEFAULT 0,
+    other_vehicle     INTEGER DEFAULT 0,
+    unknown_vehicle   INTEGER DEFAULT 0,
+    parked_vehicle    INTEGER DEFAULT 0,
+    pedestrian        INTEGER DEFAULT 0,
+    school_bus        INTEGER DEFAULT 0,
+    suv               INTEGER DEFAULT 0,
+    taxi              INTEGER DEFAULT 0,
+    train             INTEGER DEFAULT 0,
+    truck             INTEGER DEFAULT 0,
+    van_or_utility    INTEGER DEFAULT 0,
+    FOREIGN KEY (crash_id) REFERENCES crashes (id)
+);
