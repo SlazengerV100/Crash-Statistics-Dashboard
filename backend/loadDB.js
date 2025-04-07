@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-const jsonDataPath = process.env.GEONJSON_PATH;
+const jsonDataPath = process.env.GEOJSON_PATH;
 const loadDataSQLPath = "load_data.sql";
 const initDBPath = "initDB.sql";
 const db = new sqlite3.Database('my_database.db');
