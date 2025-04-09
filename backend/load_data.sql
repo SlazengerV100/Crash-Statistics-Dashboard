@@ -90,5 +90,26 @@ SELECT dummy_table.OBJECTID,
        dummy_table.holiday
 FROM dummy_table;
 
+INSERT INTO vehicle_crash_stats
+(crash_id, bicycle, bus, car_station_wagon, motorcycle, moped, other_vehicle, unknown_vehicle, pedestrian,
+ parked_vehicle, school_bus, suv, taxi, train, truck, van_or_utility)
+SELECT dummy_table.OBJECTID,
+       COALESCE(dummy_table.bicycle, 0),
+       COALESCE(dummy_table.bus, 0),
+       COALESCE(dummy_table.carStationWagon, 0),
+       COALESCE(dummy_table.motorcycle, 0),
+       COALESCE(dummy_table.moped, 0),
+       COALESCE(dummy_table.otherVehicleType, 0),
+       COALESCE(dummy_table.unknownVehicleType, 0),
+       COALESCE(dummy_table.pedestrian, 0),
+       COALESCE(dummy_table.parkedVehicle, 0),
+       COALESCE(dummy_table.schoolBus, 0),
+       COALESCE(dummy_table.suv, 0),
+       COALESCE(dummy_table.taxi, 0),
+       COALESCE(dummy_table.train, 0),
+       COALESCE(dummy_table.truck, 0),
+       COALESCE(dummy_table.vanOrUtility, 0)
+FROM dummy_table;
+
 DROP TABLE dummy_table;
 
