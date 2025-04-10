@@ -224,7 +224,7 @@ app.get('/api/filters/weather', (req, res) => {
         FROM crash_weather
         WHERE weather_b IS NOT NULL
         ORDER BY condition`;
-    
+
     db.all(query, (err, rows) => {
         if (err) {
             console.error('Error fetching weather conditions:', err);
@@ -237,6 +237,102 @@ app.get('/api/filters/weather', (req, res) => {
     });
 });
 
+app.get('/api/factors/vehicles', (req, res) => {
+    const query = `
+        SELECT 
+            bicycle > 0                          AS bicycle,
+            bus > 0                              AS bus,
+            car_station_wagon = 1                AS car,
+            car_station_wagon > 1                AS multipleCars,
+            moped > 0                            AS moped,
+            motorcycle > 0                       AS motorcycle,
+            other_vehicle > 0 OR unknown_vehicle AS otherVehicle,
+            parked_vehicle > 0                   AS parkedVehicle,
+            pedestrian > 0                       AS pedestrian,
+            school_bus > 0                       AS schoolBus,
+            suv > 0                              AS suv,
+            taxi > 0                             AS taxi,
+            train > 0                             AS train,
+            truck > 0                             AS truck,
+            van_or_utility > 0                   AS vanOrUtility,
+            COUNT(*)                             AS crashCount
+        FROM vehicle_crash_stats
+        GROUP BY 
+            bicycle > 0,
+            bus > 0,
+            car_station_wagon = 1,
+            car_station_wagon > 1,
+            moped > 0,
+            motorcycle > 0,
+            other_vehicle > 0 OR unknown_vehicle,
+            parked_vehicle > 0,
+            pedestrian > 0,
+            school_bus > 0,
+            suv > 0,
+            taxi > 0,
+            train > 0,
+            truck > 0,
+            van_or_utility > 0
+        ORDER BY crashCount DESC
+    `;
+    const vehicles = [
+        'bicycle',
+        'bus',
+        'car',
+        'multipleCars',
+        'moped',
+        'motorcycle',
+        'otherVehicle',
+        'parkedVehicle',
+        'pedestrian',
+        'schoolBus',
+        'suv',
+        'taxi',
+        'train',
+        'truck',
+        'vanOrUtility'
+    ];
+    const vehicleLabels = {
+        bicycle: 'Bicycle',
+        bus: 'Bus',
+        car: 'Car',
+        multipleCars: 'Multiple Cars',
+        moped: 'Moped',
+        motorcycle: 'Motorcycle',
+        otherVehicle: 'Other Vehicle',
+        parkedVehicle: 'Parked Vehicle',
+        pedestrian: 'Pedestrian',
+        schoolBus: 'School Bus',
+        suv: 'SUV',
+        taxi: 'Taxi',
+        train: 'Train',
+        truck: 'Truck',
+        vanOrUtility: 'Van or Utility'
+    };
+
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error querying database:', err.message);
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+
+        const result = rows.map(row => {
+            const involvedVehicles = vehicles
+                .filter(flag => row[flag])
+                .map(flag => vehicleLabels[flag])
+                .sort()
+                .join('-');
+
+            return [involvedVehicles, row.crashCount];
+        });
+
+        res.json(result);
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server listening on http://localhost:3000');
+});
 
 const server = app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
