@@ -1,45 +1,34 @@
-import React, { useEffect, useState, useRef } from 'react';
-import * as d3 from 'd3';
-
-import {} from 'd3-geo';
-
-
+import React, { useEffect, useRef } from 'react';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { initMap } from './initMap';
 
 const MainMap = () => {
-    const svgRef = useRef();
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
-    useEffect(() => {
-        const width = 800;
-        const height = 1000;
+  useEffect(() => {
+    let mapInstance;
 
-        const svg = d3.select(svgRef.current)
-        .attr("width", width)
-        .attr("height", height);
+    const setup = async () => {
+      mapInstance = await initMap(mapContainerRef.current);
+      mapRef.current = mapInstance;
+    };
 
-        const projection = d3.geoMercator()
-        .center([172.5, -41])
-        .scale(3000)
-        .translate([width / 2, height / 2]);
+    setup();
 
-        const path = d3.geoPath().projection(projection);
+    return () => {
+      if (mapInstance) {
+        mapInstance.remove();
+      }
+    };
+  }, []);
 
-        d3.json("/nz.json").then((geoData) => {
-        svg.selectAll("path")
-            .data(geoData.features)
-            .join("path")
-            .attr("d", path)
-            .attr("fill", "#a3c9a8")
-            .attr("stroke", "#333");
-        });
-    }, []);
-
-    return (
-    <>
-        <svg ref={svgRef}></svg>
-    </>  
-    );
-}
-
-
+  return (
+    <div
+      ref={mapContainerRef}
+      style={{ position: 'relative', width: '100%', height: '100vh' }}
+    />
+  );
+};
 
 export default MainMap;
