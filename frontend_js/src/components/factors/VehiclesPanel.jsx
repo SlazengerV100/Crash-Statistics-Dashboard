@@ -93,7 +93,16 @@ const VehiclesPanel = ({data}) => {
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", "1.5em")
-            .text("of visits begin with this sequence");
+            .text("of crashes involve this vehicle");
+
+        label
+            .append("tspan")
+            .attr("class", "vehicle-name")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("dy", "2.5em")
+            .attr("font-size", "1.2em")
+            .text("");
 
         svg
             .attr("viewBox", `${-radius} ${-radius} ${width} ${width}`)
@@ -133,7 +142,11 @@ const VehiclesPanel = ({data}) => {
                     .select(".percentage")
                     .text(percentage + "%");
 
-                element.value = {sequence, percentage};
+                label.select(".vehicle-name").text(
+                    sequence.map(s => s.data.name).join(" + ")
+                );
+
+                element.value = { sequence, percentage };
                 element.dispatchEvent(new CustomEvent("input"));
             });
 
