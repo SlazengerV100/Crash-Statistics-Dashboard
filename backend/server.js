@@ -125,7 +125,7 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
 
         try {
             const years = Array.from(
-                { length: endYear - startYear + 1 }, 
+                { length: endYear - startYear + 1 },
                 (_, i) => startYear + i
             );
 
@@ -140,7 +140,7 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
             // Fill in actual crash counts
             rows.forEach(row => {
                 if (row.region_name in dataByRegion) {
-                    const value = isPerCapita 
+                    const value = isPerCapita
                         ? (row.crash_count / row.population) * 100000 // Convert to per 100,000 people
                         : row.crash_count;
                     dataByRegion[row.region_name][row.crash_year] = Number(value.toFixed(2));
@@ -201,7 +201,7 @@ app.get('/api/filters/severity', (req, res) => {
         FROM crashes 
         WHERE severity_description IS NOT NULL 
         ORDER BY severity_description`;
-    
+
     db.all(query, (err, rows) => {
         if (err) {
             console.error('Error fetching severity descriptions:', err);
@@ -326,7 +326,36 @@ app.get('/api/factors/vehicles', (req, res) => {
             return [involvedVehicles, row.crashCount];
         });
 
-        res.json(result);
+        const tree = (() => {
+            const root = { name: "root", children: [] };
+
+            for (const [path, value] of result) {
+                const parts = path.split("-");
+                let currentNode = root;
+
+                for (let i = 0; i < parts.length; i++) {
+                    const nodeName = parts[i];
+                    let child = currentNode.children?.find(c => c.name === nodeName);
+
+                    if (!child) {
+                        child = { name: nodeName };
+                        if (i < parts.length - 1) {
+                            child.children = [];
+                        }
+                        currentNode.children = currentNode.children || [];
+                        currentNode.children.push(child);
+                    }
+
+                    currentNode = child;
+                }
+
+                currentNode.value = Number(value);
+            }
+
+            return root;
+        })();
+
+        res.json(tree);
     });
 });
 
