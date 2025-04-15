@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Grid, Box, Typography, Button} from '@mui/material';
 import VehiclesPanel from "../components/factors/VehiclesPanel.jsx";
+import * as d3 from "d3";
 
 const FactorsPage = () => {
     const [vehicleCombos, setVehicleCombos] = useState([]);
@@ -23,7 +24,6 @@ const FactorsPage = () => {
         fetchVehicleData()
     }, []);
 
-
     return (
         <Grid container justifyContent="center" className="page-content">
             {/* Outer Grid occupying 9/12 of the width, centered */}
@@ -37,7 +37,7 @@ const FactorsPage = () => {
                     </Typography>
                 </Box>
                 <Box>
-                    <VehiclesPanel onLoad={fetchVehicleData} data={vehicleCombos}/>
+                    <VehiclesPanel onLoad={fetchVehicleData} data={vehicleCombos} />
                 </Box>
             </Grid>
         </Grid>
