@@ -18,7 +18,7 @@ const VehiclesPanel = ({data}) => {
         .domain([
             "Bicycle",
             "Bus",
-            "Car",
+            "One Car",
             "Multiple Cars",
             "Moped",
             "Motorcycle",

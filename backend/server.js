@@ -295,7 +295,7 @@ app.get('/api/factors/vehicles', (req, res) => {
     const vehicleLabels = {
         bicycle: 'Bicycle',
         bus: 'Bus',
-        car: 'Car',
+        car: 'One Car',
         multipleCars: 'Multiple Cars',
         moped: 'Moped',
         motorcycle: 'Motorcycle',
