@@ -53,8 +53,8 @@ FROM dummy_table;
 
 INSERT INTO location
 SELECT dummy_table.OBJECTID,
-       dummy_table.latitude,
        dummy_table.longitude,
+       dummy_table.latitude,
        dummy_table.crashLocation1,
        dummy_table.crashLocation2,
        dummy_table.region,
@@ -90,5 +90,59 @@ SELECT dummy_table.OBJECTID,
        dummy_table.holiday
 FROM dummy_table;
 
+INSERT INTO vehicle_crash_stats
+(crash_id, bicycle, bus, car_station_wagon, motorcycle, moped, other_vehicle, unknown_vehicle, pedestrian,
+ parked_vehicle, school_bus, suv, taxi, train, truck, van_or_utility)
+SELECT dummy_table.OBJECTID,
+       COALESCE(dummy_table.bicycle, 0),
+       COALESCE(dummy_table.bus, 0),
+       COALESCE(dummy_table.carStationWagon, 0),
+       COALESCE(dummy_table.motorcycle, 0),
+       COALESCE(dummy_table.moped, 0),
+       COALESCE(dummy_table.otherVehicleType, 0),
+       COALESCE(dummy_table.unknownVehicleType, 0),
+       COALESCE(dummy_table.pedestrian, 0),
+       COALESCE(dummy_table.parkedVehicle, 0),
+       COALESCE(dummy_table.schoolBus, 0),
+       COALESCE(dummy_table.suv, 0),
+       COALESCE(dummy_table.taxi, 0),
+       COALESCE(dummy_table.train, 0),
+       COALESCE(dummy_table.truck, 0),
+       COALESCE(dummy_table.vanOrUtility, 0)
+FROM dummy_table;
+
 DROP TABLE dummy_table;
 
+SELECT bicycle > 0                          AS Bicycle,
+       bus > 0                              AS Bus,
+       car_station_wagon = 1                AS Car,
+       car_station_wagon > 1                AS [Multiple Cars],
+                          moped > 0                            AS Moped,
+                          motorcycle > 0                       AS Motorcycle,
+                          other_vehicle > 0 OR unknown_vehicle AS [Other Vehicle],
+                          parked_vehicle > 0                   AS [Parked Vehicle],
+                          pedestrian > 0                       AS Pedestrian,
+                          school_bus > 0                       AS [School Bus],
+                          suv > 0                              AS SUV,
+                          taxi > 0                             AS Taxi,
+                          train > 0                            AS Train,
+                          truck > 0                            AS Truck,
+                          van_or_utility                       AS [Van or Utility],
+                          COUNT(*)                             AS [Crash Count]
+FROM vehicle_crash_stats
+GROUP BY bicycle > 0,
+    bus > 0,
+    car_station_wagon = 1,
+    car_station_wagon > 1,
+    moped > 0,
+    motorcycle > 0,
+    other_vehicle > 0,
+    parked_vehicle > 0,
+    pedestrian > 0,
+    school_bus > 0,
+    suv > 0,
+    taxi > 0,
+    train > 0,
+    truck > 0,
+    van_or_utility > 0
+ORDER BY [Crash Count] DESC
