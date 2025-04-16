@@ -164,8 +164,8 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
     });
 });
 
-// Get all crashes for a specific year, returns geojson
-app.post('/api/crashes/year', (req, res) => {
+// Get all crash locations for a specific year, returns geojson
+app.post('/api/crashes/location', (req, res) => {
     // get year from params or null
     console.log(req.query);
     const year  = parseInt(req.query.year) || null;
@@ -200,7 +200,7 @@ app.post('/api/crashes/year', (req, res) => {
                 },
                 geometry: {
                     type: "Point",
-                    coordinates: [row.latitude, row.longitude]
+                    coordinates: [row.longitude, row.latitude]
                 }
             });
         });
