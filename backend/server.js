@@ -164,7 +164,7 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
     });
 });
 
-// Get all crashes for a specific year
+// Get all crashes for a specific year, returns geojson
 app.post('/api/crashes/year', (req, res) => {
     // get year from params or null
     console.log(req.query);
@@ -178,21 +178,49 @@ app.post('/api/crashes/year', (req, res) => {
         WHERE c.crash_year = ?
     `;
 
-    // Run query and return results as json
-    // if error, return error message as json
-    // else return rows as json
+
     db.all(neededQuery, [year], (err, rows) => {
         if (err) {
             console.error('Error fetching crashes:', err);
             res.status(500).json({ error: err.message });
         } else {
-            console.log('Rows:', rows); // Debug log
-            res.json(rows);
-        }
+        const groupedByRegion = {};
+
+        rows.forEach(row => {
+            const region = row.region_name;
+            if (!groupedByRegion[region]) {
+                groupedByRegion[region] = [];
+            }
+
+            groupedByRegion[region].push({
+                type: "Feature",
+                properties: {
+                    crash_id: row.crash_id,
+                    severity: row.severity_description
+                },
+                geometry: {
+                    type: "Point",
+                    coordinates: [row.latitude, row.longitude]
+                }
+            });
+        });
+
+        // Now each region has its own FeatureCollection
+        const geojsonByRegion = Object.fromEntries(
+            Object.entries(groupedByRegion).map(([region, features]) => [
+                region,
+                {
+                    type: "FeatureCollection",
+                    features
+                }
+            ])
+        );
+
+        res.json(geojsonByRegion);
+        };
     });
-
-
 });
+
 
 // Get all unique regions
 app.get('/api/regions', (req, res) => {
