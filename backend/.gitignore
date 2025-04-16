@@ -1,1 +1,6 @@
 .env
+
+my_database.db
+eda.js
+eda.sql
+node_modules

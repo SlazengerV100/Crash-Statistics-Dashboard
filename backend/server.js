@@ -164,6 +164,36 @@ app.post('/api/crashes/yearly-counts', (req, res) => {
     });
 });
 
+// Get all crashes for a specific year
+app.post('/api/crashes/year', (req, res) => {
+    // get year from params or null
+    console.log(req.query);
+    const year  = parseInt(req.query.year) || null;
+    console.log(year);
+
+    //fetch all crashes for a given year across nz, stores region, latitude, longitude, severerity and crash_id
+    const neededQuery = `SELECT crash_id, region_name, latitude, longitude, severity_description
+        FROM crashes c
+        JOIN location l ON c.id = l.crash_id
+        WHERE c.crash_year = ?
+    `;
+
+    // Run query and return results as json
+    // if error, return error message as json
+    // else return rows as json
+    db.all(neededQuery, [year], (err, rows) => {
+        if (err) {
+            console.error('Error fetching crashes:', err);
+            res.status(500).json({ error: err.message });
+        } else {
+            console.log('Rows:', rows); // Debug log
+            res.json(rows);
+        }
+    });
+
+
+});
+
 // Get all unique regions
 app.get('/api/regions', (req, res) => {
     const query = `
@@ -183,6 +213,7 @@ app.get('/api/regions', (req, res) => {
         }
     });
 });
+
 
 app.get('/api/filters/number-of-lanes', (req, res) => {
     const query = 'SELECT DISTINCT number_of_lanes FROM crash_stats WHERE number_of_lanes IS NOT NULL ORDER BY number_of_lanes';
