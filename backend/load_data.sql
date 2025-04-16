@@ -53,8 +53,8 @@ FROM dummy_table;
 
 INSERT INTO location
 SELECT dummy_table.OBJECTID,
-       dummy_table.latitude,
        dummy_table.longitude,
+       dummy_table.latitude,
        dummy_table.crashLocation1,
        dummy_table.crashLocation2,
        dummy_table.region,
