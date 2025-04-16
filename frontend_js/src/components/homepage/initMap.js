@@ -1,10 +1,12 @@
 import maplibregl from 'maplibre-gl';
 import * as d3 from 'd3';
 
+import axios from 'axios';
+
 export const initMap = async (container) => {
   const map = new maplibregl.Map({
     container: container,
-    style: `https://api.maptiler.com/maps/backdrop/style.json?key=MmRTvJbsmvS37AW7dAoc`,
+    style: `https://api.maptiler.com/maps/019632d1-1e12-7540-8db2-66efc02123a7/style.json?key=MmRTvJbsmvS37AW7dAoc`,
     center: [172.5, -41],
     zoom: 5,
   });
@@ -47,7 +49,7 @@ export const initMap = async (container) => {
         .data(geoData.features)
         .join("path")
         .attr("d", path)
-        .attr("fill", "rgba(0, 150, 255, 0.3)")
+        .attr("fill", "rgba(124, 200, 255, 0.56)")
         .attr("stroke", "#005")
         .attr("stroke-width", 1);
 
@@ -59,3 +61,13 @@ export const initMap = async (container) => {
 
   return map;
 };
+
+
+export const fetchMapData = async () => {
+    try {
+        const response = await axios.get('/api/mapdata');
+    }catch (error) {
+        console.error('Error fetching map data:', error);
+    }
+
+}
