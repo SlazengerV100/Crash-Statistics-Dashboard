@@ -17,7 +17,7 @@ const TimeSeriesPage = () => {
         const [startYear, endYear] = yearRange;
         setFilters(filters);
 
-        const response = await fetch('http://localhost:5000/api/crashes/yearly-counts', {
+        const response = await fetch('http://localhost:5001/api/crashes/yearly-counts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 

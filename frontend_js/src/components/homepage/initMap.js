@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const fetchMapDataFromYear = async (year) => {
   try {
-    const response = await axios.post(`http://localhost:5000/api/crashes/location?year=${year}`);
+    const response = await axios.post(`http://localhost:5001/api/crashes/location?year=${year}`);
     console.log('Map data fetched:', response.data);
     return response.data;
   } catch (error) {
