@@ -1,22 +1,27 @@
 import maplibregl from 'maplibre-gl';
 import * as d3 from 'd3';
+import { fetchMapDataFromYear } from '../../services/api'; // Adjust the import path as necessary
 
-import axios from 'axios';
+export const updateHeatmapData = async (map, year) => {
+  const crashLocationsByRegion = await fetchMapDataFromYear(year);
 
-const fetchMapDataFromYear = async (year) => {
-  try {
-    const response = await axios.post(`http://localhost:5000/api/crashes/location?year=${year}`);
-    console.log('Map data fetched:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching map data:', error);
-    return null;
+  const allCrashLocations = {
+    type: 'FeatureCollection',
+    features: Object.values(crashLocationsByRegion).flatMap(region => region.features),
+  };
+
+  console.log(`Updating heatmap to year ${year}`, allCrashLocations);
+
+  const source = map.getSource('crashes-heatmap');
+  if (source) {
+    source.setData(allCrashLocations);
+    console.log("Heatmap source updated with new data");
+  } else {
+    console.warn(`Heatmap source not found, looking for {sourceId: 'crashes-heatmap'}`);
   }
-}
+};
 
-
-export const initMap = async (container) => {
-  const year = 2020;
+export const initMap = async (container, year) => {
 
   const map = new maplibregl.Map({
     container: container,
@@ -87,6 +92,14 @@ export const initMap = async (container) => {
 
 
     const canvasContainer = map.getCanvasContainer();
+
+    /*
+    // Create a D3 overlay for the map
+
+    THIS IS A WORK IN PROGRESS, COULD BE USED BY YOU TO GENERATE OVERLAY FOR NZ MAPS REGIONALLY
+
+    */
+
 
     // const svg = d3.select(canvasContainer)
     //   .append('svg')
