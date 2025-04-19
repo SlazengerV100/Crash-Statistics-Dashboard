@@ -52,7 +52,7 @@ export const initMap = async (container, year, setYear, availableYears) => {
   // Create D3 overlay and heatmap after the map loads
   map.on('load', () => {
     heatmapLegend(map); // Add heatmap legend
-    const canvasContainer = map.getCanvasContainer();
+    map.getCanvasContainer();
   });
 
 
