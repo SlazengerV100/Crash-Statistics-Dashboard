@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Paper, Box, Typography } from '@mui/material';
 import { Line } from 'react-chartjs-2';
+import FilterLegendPanel from './FilterLegendPanel';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -23,7 +25,8 @@ ChartJS.register(
     Legend
 );
 
-const LinegraphPanel = ({ data, isLoading }) => {
+const LinegraphPanel = ({ data, isLoading, filters}) => {
+
     // Prepare chart data
     const chartData = {
         labels: data?.labels || [],
@@ -53,7 +56,7 @@ const LinegraphPanel = ({ data, isLoading }) => {
                 display: true,
                 text: 'Crashes by Region Over Time',
                 font: {
-                    size: 16
+                    size: 32
                 },
                 padding: 20
             }
@@ -92,12 +95,12 @@ const LinegraphPanel = ({ data, isLoading }) => {
             elevation={2}
             sx={{
                 p: 2.5,
-                minHeight: 400,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flex: 1,
-                bgcolor: 'background.paper'
+                bgcolor: 'background.paper',
+                height: '100%'  // Ensure Paper takes up 100% of the height
             }}
         >
             {isLoading ? (
@@ -121,12 +124,20 @@ const LinegraphPanel = ({ data, isLoading }) => {
                     No graph loaded
                 </Typography>
             ) : (
-                <Box sx={{ width: '100%', height: '100%' }}>
+                <Box 
+                    sx={{ 
+                        width: '100%', 
+                        height: '100%',  // Ensure Box takes up full height
+                        position: 'relative'  // This ensures that the legend is anchored correctly
+                    }}
+                >
                     <Line data={chartData} options={options} />
+                    <FilterLegendPanel filters={filters || {}} />
                 </Box>
             )}
         </Paper>
     );
+    
 };
 
 export default LinegraphPanel; 
