@@ -1,8 +1,7 @@
 import maplibregl from 'maplibre-gl';
-import * as d3 from 'd3';
-import { fetchMapDataFromYear } from '../../services/api'; // Adjust the import path as necessary
-import { YearSliderControl } from './yearSliderControl'; // Adjust the import path as necessary
-import { heatmapLegend } from './heatmapLegend'; // Adjust the import path as necessary
+import { fetchMapDataFromYear } from '../../services/api';
+import { YearSliderControl } from './yearSliderControl';
+import { heatmapLegend } from './heatmapLegend';
 
 export const updateHeatmapData = async (map, year) => {
   const crashLocationsByRegion = await fetchMapDataFromYear(year);
@@ -54,58 +53,6 @@ export const initMap = async (container, year, setYear, availableYears) => {
   map.on('load', () => {
     heatmapLegend(map); // Add heatmap legend
     const canvasContainer = map.getCanvasContainer();
-
-    /*
-    // Create a D3 overlay for the map
-
-    THIS IS A WORK IN PROGRESS, COULD BE USED BY YOU TO GENERATE OVERLAY FOR NZ MAPS REGIONALLY
-
-    */
-
-
-    // const svg = d3.select(canvasContainer)
-    //   .append('svg')
-    //   .attr('class', 'd3-overlay')
-    //   .style('position', 'absolute')
-    //   .style('top', 0)
-    //   .style('left', 0)
-    //   .style('width', '100%')
-    //   .style('height', '100%')
-    //   .style('pointer-events', 'none');
-
-    // d3.json('/nz.json').then((geoData) => {
-    //   const project = (lngLat) => {
-    //     const point = map.project(new maplibregl.LngLat(...lngLat));
-    //     return [point.x, point.y];
-    //   };
-
-    //   const path = d3.geoPath().projection({
-    //     stream: (s) => ({
-    //       point(x, y) {
-    //         const [px, py] = project([x, y]);
-    //         s.point(px, py);
-    //       },
-    //       sphere() { s.sphere(); },
-    //       lineStart() { s.lineStart(); },
-    //       lineEnd() { s.lineEnd(); },
-    //       polygonStart() { s.polygonStart(); },
-    //       polygonEnd() { s.polygonEnd(); },
-    //     }),
-    //   });
-
-    //   svg.selectAll("path")
-    //     .data(geoData.features)
-    //     .join("path")
-    //     .attr("d", path)
-    //     .attr("fill", "rgba(124, 200, 255, 0.56)")
-    //     .attr("stroke", "#005")
-    //     .attr("stroke-width", 1);
-
-    //   map.on('move', () => {
-    //     svg.selectAll("path").attr("d", path);
-    //   });
-    // });
-
   });
 
 
@@ -135,15 +82,6 @@ export const initMap = async (container, year, setYear, availableYears) => {
     source: 'crashes-heatmap',
     maxzoom: 15,
     paint: {
-      // Increase the heatmap weight based on crash severity (optional tweak)
-      // 'heatmap-weight': [
-      //   'match',
-      //   ['get', 'severity'],
-      //   'Fatal Crash', 3,
-      //   'Serious Crash', 2,
-      //   'Minor Crash', 1,
-      //   0.5 // fallback weight
-      // ],
       // Reduce intensity at all zoom levels
       'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 5, 0.4, 15, 0.6],
 
