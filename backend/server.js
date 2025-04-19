@@ -55,6 +55,25 @@ app.get('/api/vehicle-types', (req, res) => {
     });
 });
 
+// Get the range of years available in the database
+app.get('/api/years', (req, res) => {
+    const query = `SELECT DISTINCT crash_year as year FROM crashes
+        WHERE crash_year IS NOT NULL
+        ORDER BY crash_year;`;
+
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error fetching years:', err);
+            res.status(500).json({ error: err.message });
+        } else {
+            const years = rows.map(row => row.year);
+            res.json(years);
+        }
+    });
+});
+
+
+
 // Get crash counts by regions across years
 app.post('/api/crashes/yearly-counts', (req, res) => {
     const { selectedRegions, startYear, endYear, filters, isPerCapita } = req.body;
