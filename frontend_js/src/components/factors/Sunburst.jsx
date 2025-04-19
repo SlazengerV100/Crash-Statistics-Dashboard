@@ -15,23 +15,6 @@ const Sunburst = ({data}) => {
 
     const color = d3
         .scaleOrdinal()
-        .domain([
-            "Bicycle",
-            "Bus",
-            "One Car",
-            "Multiple Cars",
-            "Moped",
-            "Motorcycle",
-            "Other Vehicle",
-            "Parked Vehicle",
-            "Pedestrian",
-            "School Bus",
-            "SUV",
-            "Taxi",
-            "Train",
-            "Truck",
-            "Van or Utility"
-        ])
         .range([
             "#1f77b4",
             "#ff7f0e",
