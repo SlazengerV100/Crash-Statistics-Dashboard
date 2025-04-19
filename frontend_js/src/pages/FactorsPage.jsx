@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, Box, Typography, CircularProgress} from '@mui/material';
+import {Grid, Box, CircularProgress} from '@mui/material';
 import Sunburst from "../components/factors/Sunburst.jsx";
 
 const FactorsPage = () => {
@@ -13,6 +13,14 @@ const FactorsPage = () => {
         const data = await res.json();
         return data;
     }
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     useEffect(() => {
         const loadData = async () => {
@@ -38,23 +46,20 @@ const FactorsPage = () => {
         <Grid container justifyContent="center" className="page-content">
             {/* Outer Grid occupying 9/12 of the width, centered */}
             <Grid size={{xs: 9}}>
-                <Box sx={{padding: 2, backgroundColor: 'lightgray'}}>
-                    <Typography variant="h6" gutterBottom>
-                        Control Section for factors
-                    </Typography>
-                    <Typography variant="body2">
-                        I haven't made up my mind for this section on how we will change between factors.
-                    </Typography>
-                </Box>
                 {loading ? (
                     <Box display="flex" justifyContent="center" alignItems="center" height="300px">
-                        <CircularProgress />
+                        <CircularProgress/>
                     </Box>
                 ) : (
-                    <Box>
-                        <Sunburst data={vehicleCombos}/>
-                        <Sunburst data={obstacleCombos}/>
-                    </Box>
+                    <Grid display="flex" justifyContent="center" alignItems="center">
+
+                        <Box width="50%">
+                            <Sunburst data={vehicleCombos} width={windowWidth / 3} name="vehicle"/>
+                        </Box>
+                        <Box width="50%">
+                            <Sunburst data={obstacleCombos} width={windowWidth / 3} name="obstacle"/>
+                        </Box>
+                    </Grid>
                 )}
             </Grid>
         </Grid>

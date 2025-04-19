@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import React, {useEffect, useRef} from "react";
 
-const Sunburst = ({data}) => {
-    const width = 640
+const Sunburst = ({data, width, name}) => {
     const radius = width / 2
 
     const partition = data =>
@@ -76,7 +75,7 @@ const Sunburst = ({data}) => {
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", "1.5em")
-            .text("of crashes involve this vehicle");
+            .text("of crashes involve this " + name);
 
         label
             .append("tspan")
