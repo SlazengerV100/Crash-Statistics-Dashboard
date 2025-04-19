@@ -8,7 +8,7 @@ const FactorsPage = () => {
 
     const fetchVehicleData = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/factors/vehicles');
+            const res = await fetch('http://localhost:5001/api/factors/vehicles');
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
             const data = await res.json();
             setVehicleCombos(data);
