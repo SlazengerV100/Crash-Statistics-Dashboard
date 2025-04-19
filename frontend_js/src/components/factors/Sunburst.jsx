@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import React, {useEffect, useRef} from "react";
 
-const VehiclesPanel = ({data}) => {
+const Sunburst = ({data}) => {
     const width = 640
     const radius = width / 2
 
@@ -169,4 +169,4 @@ const VehiclesPanel = ({data}) => {
     )
 }
 
-export default VehiclesPanel;
+export default Sunburst;

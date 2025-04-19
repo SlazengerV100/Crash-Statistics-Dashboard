@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Grid, Box, Typography, Button} from '@mui/material';
-import VehiclesPanel from "../components/factors/VehiclesPanel.jsx";
+import Sunburst from "../components/factors/Sunburst.jsx";
 import * as d3 from "d3";
 
 const FactorsPage = () => {
@@ -37,7 +37,8 @@ const FactorsPage = () => {
                     </Typography>
                 </Box>
                 <Box>
-                    <VehiclesPanel onLoad={fetchVehicleData} data={vehicleCombos} />
+                    <Sunburst data={vehicleCombos} />
+
                 </Box>
             </Grid>
         </Grid>
