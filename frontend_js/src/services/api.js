@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchYearsFromBackend = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/crashes/available-years');
+    const response = await axios.get('http://localhost:5000/api/years');
     return response.data; // expected to be something like: [2018, 2019, 2020, 2021]
   } catch (error) {
     console.error('Error fetching years:', error);
