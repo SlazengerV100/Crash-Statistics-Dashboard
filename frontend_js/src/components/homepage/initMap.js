@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import * as d3 from 'd3';
 import { fetchMapDataFromYear } from '../../services/api'; // Adjust the import path as necessary
 import { YearSliderControl } from './yearSliderControl'; // Adjust the import path as necessary
+import { heatmapLegend } from './heatmapLegend'; // Adjust the import path as necessary
 
 export const updateHeatmapData = async (map, year) => {
   const crashLocationsByRegion = await fetchMapDataFromYear(year);
@@ -51,7 +52,7 @@ export const initMap = async (container, year, setYear, availableYears) => {
 
   // Create D3 overlay and heatmap after the map loads
   map.on('load', () => {
-
+    heatmapLegend(map); // Add heatmap legend
     const canvasContainer = map.getCanvasContainer();
 
     /*

@@ -10,7 +10,15 @@ export class YearSliderControl {
       this._map = map;
       this._container = document.createElement('div');
       this._container.className = 'maplibregl-ctrl custom-slider-ctrl';
-  
+      this._container.style.backgroundColor = 'white';
+      this._container.style.padding = '12px';
+      this._container.style.borderRadius = '8px';
+      this._container.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+      this._container.style.display = 'flex';
+      this._container.style.flexDirection = 'column';
+      this._container.style.alignItems = 'center';
+      this._container.style.width = '300px';
+
       // Build slider
       const label = document.createElement('label');
       label.textContent = `Year: ${this._year}`;
@@ -24,8 +32,9 @@ export class YearSliderControl {
       slider.max = Math.max(...this._availableYears);
       slider.step = 1;
       slider.value = this._year;
-  
-      slider.style.width = '150px';
+      
+      // slider fills width of container
+      slider.style.width = '100%';
   
       slider.oninput = (e) => {
         const selectedYear = parseInt(e.target.value);
