@@ -161,7 +161,7 @@ export const initMap = async (container, year, setYear, availableYears) => {
       ],
 
       // Smaller radius = more pinpointed data = less glowing blobs
-      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 8, 15, 30],
+      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 5, 10, 8, 15, 30],
 
       // Keep opacity subtle
       'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0.8, 15, 0.4]

@@ -69,20 +69,6 @@ const MainMap = () => {
 
   return (
     <div>
-      <label>
-        Select Year:
-        <select value={year} onChange={(e) => {
-            const selectedYear = parseInt(e.target.value);
-            console.log(`Selected year: ${selectedYear}`);
-            console.log(`previous year: ${year}`);
-            setYear(parseInt(e.target.value))
-          }}>
-          <option value={2018}>2018</option>
-          <option value={2019}>2019</option>
-          <option value={2020}>2020</option>
-          <option value={2021}>2021</option>
-        </select>
-      </label>
       <div
         ref={mapContainerRef}
         style={{ position: 'relative', width: '100%', height: '80vh' }}
