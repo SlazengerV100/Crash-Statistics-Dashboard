@@ -36,11 +36,17 @@ export class YearSliderControl {
       // slider fills width of container
       slider.style.width = '100%';
   
-      slider.oninput = (e) => {
-        const selectedYear = parseInt(e.target.value);
-        label.textContent = `Year: ${selectedYear}`;
-        this._setYear(selectedYear);
-      };
+      // slider.oninput = (e) => {
+      //   const selectedYear = parseInt(e.target.value);
+      //   label.textContent = `Year: ${selectedYear}`;
+      //   this._setYear(selectedYear);
+      // };
+
+      slider.addEventListener('change', (event) => {
+        const newYear = event.target.value;
+        label.textContent = `Year: ${newYear}`;
+        this._setYear(newYear);
+      });
   
       this._container.appendChild(label);
       this._container.appendChild(slider);

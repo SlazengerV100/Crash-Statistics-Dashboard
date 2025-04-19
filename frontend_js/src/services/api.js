@@ -20,4 +20,14 @@ export const fetchMapDataFromYear = async (year) => {
       return null;
     }
   }
-  
+
+  export const fetchallMapDataFrom = async (year) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/crashes/location`);
+      console.log('Map data fetched:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching map data:', error);
+      return null;
+    }
+  }
