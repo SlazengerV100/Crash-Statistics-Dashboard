@@ -11,6 +11,7 @@ import FactorsPage from './pages/FactorsPage';
 import PredictorPage from './pages/PredictorPage';
 import HelpPage from './pages/HelpPage';
 import NavBar from './components/navigation/NavBar';
+import Footer from './components/navigation/Footer';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
+        <Footer />
       </Router>
     </>
   )
