@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchYearsFromBackend = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/years');
+    const response = await axios.get('http://localhost:5001/api/years');
     return response.data; // expected to be something like: [2018, 2019, 2020, 2021]
   } catch (error) {
     console.error('Error fetching years:', error);
@@ -12,7 +12,7 @@ export const fetchYearsFromBackend = async () => {
 
 export const fetchMapDataFromYear = async (year) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/crashes/location?year=${year}`);
+      const response = await axios.post(`http://localhost:5001/api/crashes/location?year=${year}`);
       console.log('Map data fetched:', response.data);
       return response.data;
     } catch (error) {
@@ -23,7 +23,7 @@ export const fetchMapDataFromYear = async (year) => {
 
   export const fetchallMapDataFrom = async (year) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/crashes/location`);
+      const response = await axios.post(`http://localhost:5001/api/crashes/location`);
       console.log('Map data fetched:', response.data);
       return response.data;
     } catch (error) {

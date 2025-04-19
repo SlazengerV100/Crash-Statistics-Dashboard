@@ -3,7 +3,7 @@ export const heatmapLegend = (map) => {
     const legendContainer = document.createElement('div');
     legendContainer.className = 'maplibregl-ctrl custom-heatmap-legend';
     legendContainer.style.position = 'absolute';
-    legendContainer.style.top = '90px';
+    legendContainer.style.top = '130px';
     legendContainer.style.left = '10px';
     legendContainer.style.backgroundColor = 'white';
     legendContainer.style.padding = '12px';
