@@ -200,3 +200,26 @@ CREATE TABLE IF NOT EXISTS vehicle_crash_stats
     van_or_utility    INTEGER DEFAULT 0,
     FOREIGN KEY (crash_id) REFERENCES crashes (id)
 );
+
+CREATE TABLE IF NOT EXISTS obstacle_crash_stats
+(
+    crash_id          INTEGER PRIMARY KEY,
+    bridge           INTEGER DEFAULT 0,
+    cliffBank               INTEGER DEFAULT 0,
+    debris INTEGER DEFAULT 0,
+    ditch             INTEGER DEFAULT 0,
+    fence        INTEGER DEFAULT 0,
+    guardRail     INTEGER DEFAULT 0,
+    houseOrBuilding   INTEGER DEFAULT 0,
+    kerb    INTEGER DEFAULT 0,
+    otherObject        INTEGER DEFAULT 0,
+    overBank    INTEGER DEFAULT 0,
+    phoneBoxEtc        INTEGER DEFAULT 0,
+    postOrPole               INTEGER DEFAULT 0,
+    strayAnimal              INTEGER DEFAULT 0,
+    trafficIsland             INTEGER DEFAULT 0,
+    trafficSign             INTEGER DEFAULT 0,
+    tree             INTEGER DEFAULT 0,
+    waterRiver    INTEGER DEFAULT 0,
+    FOREIGN KEY (crash_id) REFERENCES crashes (id)
+);

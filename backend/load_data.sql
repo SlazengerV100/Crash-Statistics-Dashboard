@@ -111,4 +111,27 @@ SELECT dummy_table.OBJECTID,
        COALESCE(dummy_table.vanOrUtility, 0)
 FROM dummy_table;
 
+INSERT INTO obstacle_crash_stats
+(crash_id, bridge, cliffBank, debris, ditch, fence, guardRail, houseOrBuilding, kerb, otherObject,
+ overBank, phoneBoxEtc, postOrPole, strayAnimal, trafficIsland, trafficSign, tree, waterRiver)
+SELECT dummy_table.OBJECTID,
+       COALESCE(dummy_table.bridge, 0),
+       COALESCE(dummy_table.cliffBank, 0),
+       COALESCE(dummy_table.debris, 0),
+       COALESCE(dummy_table.ditch, 0),
+       COALESCE(dummy_table.fence, 0),
+       COALESCE(dummy_table.guardRail, 0),
+       COALESCE(dummy_table.houseOrBuilding, 0),
+       COALESCE(dummy_table.kerb, 0),
+       COALESCE(dummy_table.otherObject, 0),
+       COALESCE(dummy_table.overBank, 0),
+       COALESCE(dummy_table.phoneBoxEtc, 0),
+       COALESCE(dummy_table.postOrPole, 0),
+       COALESCE(dummy_table.strayAnimal, 0),
+       COALESCE(dummy_table.trafficIsland, 0),
+       COALESCE(dummy_table.trafficSign, 0),
+       COALESCE(dummy_table.tree, 0),
+       COALESCE(dummy_table.waterRiver, 0)
+FROM dummy_table;
+
 DROP TABLE dummy_table;
