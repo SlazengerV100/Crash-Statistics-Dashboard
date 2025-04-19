@@ -111,38 +111,27 @@ SELECT dummy_table.OBJECTID,
        COALESCE(dummy_table.vanOrUtility, 0)
 FROM dummy_table;
 
-DROP TABLE dummy_table;
+INSERT INTO obstacle_crash_stats
+(crash_id, bridge, cliffBank, debris, ditch, fence, guardRail, houseOrBuilding, kerb, otherObject,
+ overBank, phoneBoxEtc, postOrPole, strayAnimal, trafficIsland, trafficSign, tree, waterRiver)
+SELECT dummy_table.OBJECTID,
+       COALESCE(dummy_table.bridge, 0),
+       COALESCE(dummy_table.cliffBank, 0),
+       COALESCE(dummy_table.debris, 0),
+       COALESCE(dummy_table.ditch, 0),
+       COALESCE(dummy_table.fence, 0),
+       COALESCE(dummy_table.guardRail, 0),
+       COALESCE(dummy_table.houseOrBuilding, 0),
+       COALESCE(dummy_table.kerb, 0),
+       COALESCE(dummy_table.otherObject, 0),
+       COALESCE(dummy_table.overBank, 0),
+       COALESCE(dummy_table.phoneBoxEtc, 0),
+       COALESCE(dummy_table.postOrPole, 0),
+       COALESCE(dummy_table.strayAnimal, 0),
+       COALESCE(dummy_table.trafficIsland, 0),
+       COALESCE(dummy_table.trafficSign, 0),
+       COALESCE(dummy_table.tree, 0),
+       COALESCE(dummy_table.waterRiver, 0)
+FROM dummy_table;
 
-SELECT bicycle > 0                          AS Bicycle,
-       bus > 0                              AS Bus,
-       car_station_wagon = 1                AS Car,
-       car_station_wagon > 1                AS [Multiple Cars],
-                          moped > 0                            AS Moped,
-                          motorcycle > 0                       AS Motorcycle,
-                          other_vehicle > 0 OR unknown_vehicle AS [Other Vehicle],
-                          parked_vehicle > 0                   AS [Parked Vehicle],
-                          pedestrian > 0                       AS Pedestrian,
-                          school_bus > 0                       AS [School Bus],
-                          suv > 0                              AS SUV,
-                          taxi > 0                             AS Taxi,
-                          train > 0                            AS Train,
-                          truck > 0                            AS Truck,
-                          van_or_utility                       AS [Van or Utility],
-                          COUNT(*)                             AS [Crash Count]
-FROM vehicle_crash_stats
-GROUP BY bicycle > 0,
-    bus > 0,
-    car_station_wagon = 1,
-    car_station_wagon > 1,
-    moped > 0,
-    motorcycle > 0,
-    other_vehicle > 0,
-    parked_vehicle > 0,
-    pedestrian > 0,
-    school_bus > 0,
-    suv > 0,
-    taxi > 0,
-    train > 0,
-    truck > 0,
-    van_or_utility > 0
-ORDER BY [Crash Count] DESC
+DROP TABLE dummy_table;

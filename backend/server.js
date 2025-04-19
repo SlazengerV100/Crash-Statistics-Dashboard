@@ -313,6 +313,35 @@ app.get('/api/filters/weather', (req, res) => {
     });
 });
 
+function processFactorsData(data) {
+    const root = { name: "root", children: [] };
+
+    for (const [path, value] of data) {
+        const parts = path.split("-");
+        let currentNode = root;
+
+        for (let i = 0; i < parts.length; i++) {
+            const nodeName = parts[i];
+            let child = currentNode.children?.find(c => c.name === nodeName);
+
+            if (!child) {
+                child = { name: nodeName };
+                if (i < parts.length - 1) {
+                    child.children = [];
+                }
+                currentNode.children = currentNode.children || [];
+                currentNode.children.push(child);
+            }
+
+            currentNode = child;
+        }
+
+        currentNode.value = Number(value);
+    }
+
+    return root;
+}
+
 app.get('/api/factors/vehicles', (req, res) => {
     const query = `
         SELECT 
@@ -402,36 +431,128 @@ app.get('/api/factors/vehicles', (req, res) => {
             return [involvedVehicles, row.crashCount];
         });
 
-        const tree = (() => {
-            const root = { name: "root", children: [] };
+        res.json(processFactorsData(result));
+    });
+});
 
-            for (const [path, value] of result) {
-                const parts = path.split("-");
-                let currentNode = root;
+app.get('/api/factors/obstacles', (req, res) => {
+    const query = `
+        SELECT
+            bridge > 0                 AS bridge,
+            cliffBank > 0              AS cliffBank,
+            debris > 0                 AS debris,
+            ditch > 0                  AS ditch,
+            fence > 0                  AS fence,
+            guardRail > 0              AS guardRail,
+            houseOrBuilding > 0        AS houseOrBuilding,
+            kerb > 0                   AS kerb,
+            otherObject > 0            AS otherObject,
+            overBank > 0               AS overBank,
+            phoneBoxEtc > 0            AS phoneBoxEtc,
+            postOrPole > 0             AS postOrPole,
+            strayAnimal > 0            AS strayAnimal,
+            trafficIsland > 0          AS trafficIsland,
+            trafficSign > 0            AS trafficSign,
+            tree > 0                   AS tree,
+            waterRiver > 0             AS waterRiver,
+            COUNT(*)                   AS crashCount
+        FROM obstacle_crash_stats
+        GROUP BY
+            bridge > 0,
+            cliffBank > 0,
+            debris > 0,
+            ditch > 0,
+            fence > 0,
+            guardRail > 0,
+            houseOrBuilding > 0,
+            kerb > 0,
+            otherObject > 0,
+            overBank > 0,
+            phoneBoxEtc > 0,
+            postOrPole > 0,
+            strayAnimal > 0,
+            trafficIsland > 0,
+            trafficSign > 0,
+            tree > 0,
+            waterRiver > 0
+        HAVING
+            MAX(bridge) > 0 OR
+            MAX(cliffBank) > 0 OR
+            MAX(debris) > 0 OR
+            MAX(ditch) > 0 OR
+            MAX(fence) > 0 OR
+            MAX(guardRail) > 0 OR
+            MAX(houseOrBuilding) > 0 OR
+            MAX(kerb) > 0 OR
+            MAX(otherObject) > 0 OR
+            MAX(overBank) > 0 OR
+            MAX(phoneBoxEtc) > 0 OR
+            MAX(postOrPole) > 0 OR
+            MAX(strayAnimal) > 0 OR
+            MAX(trafficIsland) > 0 OR
+            MAX(trafficSign) > 0 OR
+            MAX(tree) > 0 OR
+            MAX(waterRiver) > 0
+        ORDER BY crashCount DESC
+    `;
 
-                for (let i = 0; i < parts.length; i++) {
-                    const nodeName = parts[i];
-                    let child = currentNode.children?.find(c => c.name === nodeName);
+    const obstacles = [
+        'bridge',
+        'cliffBank',
+        'debris',
+        'ditch',
+        'fence',
+        'guardRail',
+        'houseOrBuilding',
+        'kerb',
+        'otherObject',
+        'overBank',
+        'phoneBoxEtc',
+        'postOrPole',
+        'strayAnimal',
+        'trafficIsland',
+        'trafficSign',
+        'tree',
+        'waterRiver'
+    ];
 
-                    if (!child) {
-                        child = { name: nodeName };
-                        if (i < parts.length - 1) {
-                            child.children = [];
-                        }
-                        currentNode.children = currentNode.children || [];
-                        currentNode.children.push(child);
-                    }
+    const obstacleLabels = {
+        bridge: 'Bridge',
+        cliffBank: 'Cliff or Bank',
+        debris: 'Debris',
+        ditch: 'Ditch',
+        fence: 'Fence',
+        guardRail: 'Guard Rail',
+        houseOrBuilding: 'House or Building',
+        kerb: 'Kerb',
+        otherObject: 'Other Object',
+        overBank: 'Over Bank',
+        phoneBoxEtc: 'Phone Box',
+        postOrPole: 'Post or Pole',
+        strayAnimal: 'Stray Animal',
+        trafficIsland: 'Traffic Island',
+        trafficSign: 'Traffic Sign',
+        tree: 'Tree',
+        waterRiver: 'Water Body'
+    };
 
-                    currentNode = child;
-                }
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error querying database:', err.message);
+            return res.status(500).json({ error: 'Database query failed' });
+        }
 
-                currentNode.value = Number(value);
-            }
+        const result = rows.map(row => {
+            const involvedObstacles = obstacles
+                .filter(flag => row[flag])
+                .map(flag => obstacleLabels[flag])
+                .sort()
+                .join('-');
 
-            return root;
-        })();
+            return [involvedObstacles, row.crashCount];
+        });
 
-        res.json(tree);
+        res.json(processFactorsData(result));
     });
 });
 

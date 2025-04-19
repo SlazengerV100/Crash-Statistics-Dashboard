@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import React, {useEffect, useRef} from "react";
 
-const VehiclesPanel = ({data}) => {
-    const width = 640
+const Sunburst = ({data, width, name}) => {
     const radius = width / 2
 
     const partition = data =>
@@ -15,23 +14,6 @@ const VehiclesPanel = ({data}) => {
 
     const color = d3
         .scaleOrdinal()
-        .domain([
-            "Bicycle",
-            "Bus",
-            "One Car",
-            "Multiple Cars",
-            "Moped",
-            "Motorcycle",
-            "Other Vehicle",
-            "Parked Vehicle",
-            "Pedestrian",
-            "School Bus",
-            "SUV",
-            "Taxi",
-            "Train",
-            "Truck",
-            "Van or Utility"
-        ])
         .range([
             "#1f77b4",
             "#ff7f0e",
@@ -93,7 +75,7 @@ const VehiclesPanel = ({data}) => {
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", "1.5em")
-            .text("of crashes involve this vehicle");
+            .text("of crashes involve this " + name);
 
         label
             .append("tspan")
@@ -169,4 +151,4 @@ const VehiclesPanel = ({data}) => {
     )
 }
 
-export default VehiclesPanel;
+export default Sunburst;
