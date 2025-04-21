@@ -1,10 +1,11 @@
 import * as d3 from "d3";
 import React, {useEffect, useRef, useState} from "react";
+import {Grid} from "@mui/material";
 
 const Sunburst = ({ data, width, name }) => {
     const radius = width / 2
     const [breadcrumbData, setBreadcrumbData] = useState([]);
-    const breadcrumbWidth = 125
+    const breadcrumbWidth = 150
     const breadcrumbHeight = 30
 
     const partition = data =>
@@ -187,7 +188,9 @@ const Sunburst = ({ data, width, name }) => {
 
     return (
         <>
-            {renderBreadcrumbs()}
+            <Grid width="100%" height={breadcrumbHeight + 10}>
+                {renderBreadcrumbs()}
+            </Grid>
             <div ref={chartRef}/>
         </>
     )
