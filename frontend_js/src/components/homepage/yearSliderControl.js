@@ -90,7 +90,7 @@ export class YearSliderControl {
             } else {
                 this._stopPlayback(button);
             }
-        }, 2000);
+        }, 1000);
     }
 
     _stopPlayback(button) {
