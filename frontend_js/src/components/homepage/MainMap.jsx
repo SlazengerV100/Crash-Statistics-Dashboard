@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { initMap, updateHeatmapData } from './initMap';
+import { initMap, updateMapData } from './initMap';
 import { fetchYearsFromBackend } from '../../services/api';
 
 const MainMap = () => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  const [year, setYear] = useState(2020);
+  const [year, setYear] = useState(2024); // Default year
 
   // Fetch years and init map
   useEffect(() => {
@@ -39,7 +39,7 @@ const MainMap = () => {
   // Update heatmap on year change
   useEffect(() => {
     if (mapRef.current) {
-      updateHeatmapData(mapRef.current, year);
+      updateMapData(mapRef.current, year);
     }
   }, [year]);
 

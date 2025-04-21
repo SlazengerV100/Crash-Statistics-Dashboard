@@ -3,7 +3,7 @@ import { fetchMapDataFromYear } from '../../services/api';
 import { YearSliderControl } from './yearSliderControl';
 import { heatmapLegend } from './heatmapLegend';
 
-export const updateHeatmapData = async (map, year) => {
+export const updateMapData = async (map, year) => {
   const crashLocationsByRegion = await fetchMapDataFromYear(year);
 
   const allCrashLocations = {
@@ -13,12 +13,21 @@ export const updateHeatmapData = async (map, year) => {
 
   console.log(`Updating heatmap to year ${year}`, allCrashLocations);
 
-  const source = map.getSource('crashes-heatmap');
-  if (source) {
-    source.setData(allCrashLocations);
+  const heatmapSource = map.getSource('crashes-heatmap');
+  if (heatmapSource) {
+    heatmapSource.setData(allCrashLocations);
     console.log("Heatmap source updated with new data");
   } else {
     console.warn(`Heatmap source not found, looking for {sourceId: 'crashes-heatmap'}`);
+  }
+  
+  // Update cluster source
+  const clusterSource = map.getSource('crashes-cluster');
+  if (clusterSource) {
+    clusterSource.setData(allCrashLocations);
+    console.log("Cluster source updated with new data");
+  } else {
+    console.warn("Cluster source 'crashes-cluster' not found");
   }
 };
 
@@ -68,10 +77,21 @@ export const initMap = async (container, year, setYear, availableYears) => {
     features: Object.values(crashLocationsByRegion).flatMap(region => region.features),
   };
 
-  // Add data source
+  // Add data sources for both visualisations:
+
+  // 1. Heatmap layer
   map.addSource('crashes-heatmap', {
     type: 'geojson',
     data: allCrashLocations,
+  });
+  
+  // 2. Clustered points layer
+  map.addSource('crashes-cluster', {
+    type: 'geojson',
+    data: allCrashLocations,
+    cluster: true,
+    clusterRadius: 10, // default is 50 — decrease to reduce cluster amount
+    clusterMaxZoom: 14 // Max zoom to cluster points on
   });
 
   console.log(`All crash locations in ${year}:`, allCrashLocations);
@@ -97,15 +117,65 @@ export const initMap = async (container, year, setYear, availableYears) => {
         0.9, 'rgb(239,138,98)',
         1, 'rgb(178,24,43)'
       ],
-
       // Smaller radius = more pinpointed data = less glowing blobs
       'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 5, 10, 8, 15, 30],
-
       // Keep opacity subtle
-      'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0.8, 15, 0.4]
+      'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 5, 1, 7, 0.8, 10, 0.6, 12, 0.2, 15, 0],
     }
   });
 
+  // add the unclustered points layer
+  map.addLayer({
+    id: 'crash-unclustered-point',
+    type: 'circle',
+    source: 'crashes-cluster',
+    filter: ['!', ['has', 'point_count']],
+    minzoom: 10,
+    paint: {
+      'circle-color': '#11b4da',
+      'circle-radius': 6,
+      'circle-stroke-width': 1,
+      'circle-stroke-color': '#fff'
+    }
+  });
+  
+  // Add the clustered points layer
+  map.addLayer({
+    id: 'crash-cluster-layer',
+    type: 'circle',
+    source: 'crashes-cluster',
+    filter: ['has', 'point_count'],
+    minzoom: 10,
+    paint: {
+      'circle-color': [
+        'step',
+        ['get', 'point_count'],
+        'rgb(103,169,207)', 5,
+        'rgb(239,138,98)', 10,
+        'rgb(178, 24, 43)',
+      ],
+      'circle-radius': [
+        'step',
+        ['get', 'point_count'],
+        10, 5,
+        15, 20,
+        20
+      ]
+    }
+  });
+  
+  map.addLayer({
+    id: 'crash-cluster-count',
+    type: 'symbol',
+    source: 'crashes-cluster',
+    filter: ['has', 'point_count'],
+    minzoom: 10,
+    layout: {
+      'text-field': '{point_count_abbreviated}',
+      'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+      'text-size': 12
+    }
+  });
 
   return map;
 };
