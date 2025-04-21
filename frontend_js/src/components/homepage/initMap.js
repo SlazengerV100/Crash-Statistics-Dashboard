@@ -46,7 +46,7 @@ export const initMap = async (container, year, setYear, availableYears) => {
 
   const map = new maplibregl.Map({
     container: container,
-    style: `https://api.maptiler.com/maps/019632d1-1e12-7540-8db2-66efc02123a7/style.json?key=MmRTvJbsmvS37AW7dAoc`,
+    style: `https://api.maptiler.com/maps/019632d1-1e12-7540-8db2-66efc02123a7/style.json?key=It9cuiKe4hf5LcwOHHPJ`,
     center: [172.5, -41],
     zoom: 5,
   });
@@ -120,7 +120,7 @@ export const initMap = async (container, year, setYear, availableYears) => {
         1.00, 'rgb(128,0,38)'               // Dark red
       ],
       // Smaller radius = more pinpointed data = less glowing blobs
-      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 4, 10, 8, 15, 20],
+      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 1, 1, 3, 2, 5, 4, 10, 8, 15, 20],
       // Keep opacity subtle
       'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 5, 1, 7, 0.8, 10, 0.6, 12, 0.2, 15, 0],
     }
@@ -184,8 +184,9 @@ export const initMap = async (container, year, setYear, availableYears) => {
         'step',
         ['get', 'point_count'],
         'rgb(103,169,207)', 5,
-        'rgb(239,138,98)', 10,
-        'rgb(178, 24, 43)', 20,
+        'rgb(158,202,225)', 10,          // Sky blue
+        'rgb(239,138,98)', 20,
+        'rgb(178, 24, 43)', 30,
         'rgb(128,0,38)',
       ],
       'circle-radius': [
