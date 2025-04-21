@@ -110,13 +110,12 @@ export const initMap = async (container, year, setYear, availableYears) => {
         'interpolate',
         ['linear'],
         ['heatmap-density'],
-        0.00, 'rgba(0,0,0,0)',              // Transparent
-        0.10, 'rgb(103,169,207)',           // Light blue
-        0.25, 'rgb(158,202,225)',           // Sky blue
-        0.40, 'rgb(197,160,169)',           // Rose
-        0.55, 'rgb(239,138,98)',            // Salmon
-        0.70, 'rgb(214,96,77)',             // Warm red-orange
-        0.85, 'rgb(178,24,43)',             // Deep red
+        0, 'rgba(33,102,172,0)',
+        0.3, 'rgb(103,169,207)',
+        0.5, 'rgb(209,229,240)',
+        0.7, 'rgb(253,219,199)',
+        0.9, 'rgb(239,138,98)',
+        1, 'rgb(178,24,43)'
       ],
       // Smaller radius = more pinpointed data = less glowing blobs
       'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 5, 10, 8, 15, 30],
