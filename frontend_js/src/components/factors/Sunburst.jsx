@@ -79,7 +79,7 @@ const Sunburst = ({ data, width, name }) => {
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", "1.5em")
-            .text("of crashes involve these " + name + "s");
+            .text("of crashes involve these " + name.toLowerCase() + "s");
 
         label
             .append("tspan")
@@ -129,7 +129,18 @@ const Sunburst = ({ data, width, name }) => {
                     .select(".percentage")
                     .text(percentage + "%");
 
-                setBreadcrumbData(sequence);
+                const colours = sequence.map(s => {
+                    const allPaths = svg.selectAll("path").nodes();
+                    const matched = allPaths.find(p => p.__data__ === s);
+                    return matched ? window.getComputedStyle(matched).fill : "#999";
+                });
+
+                console.log(colours);
+
+                setBreadcrumbData(sequence.map((node, i) => ({
+                    node,
+                    fill: colours[i]
+                })));
             });
 
         return element;
@@ -152,8 +163,8 @@ const Sunburst = ({ data, width, name }) => {
                     {breadcrumbData.map((d, i) => (
                         <g key={i} transform={`translate(${i * (breadcrumbWidth)}, 0)`}>
                             <polygon
-                                points={breadcrumbPoints(d, i)}
-                                fill={color(d.data.name)}
+                                points={breadcrumbPoints(d.node, i)}
+                                fill={d.fill}
                             />
                             <text
                                 x={(breadcrumbWidth + 10) / 2}
@@ -162,7 +173,7 @@ const Sunburst = ({ data, width, name }) => {
                                 textAnchor="middle"
                                 fill="white"
                             >
-                                {d.data.name}
+                                {d.node.data.name}
                             </text>
                         </g>
                     ))}
@@ -187,12 +198,13 @@ const Sunburst = ({ data, width, name }) => {
     }
 
     return (
-        <>
+        <div align="center">
+            <h1>{name + "s"}</h1>
             <Grid width="100%" height={breadcrumbHeight + 10}>
                 {renderBreadcrumbs()}
             </Grid>
             <div ref={chartRef}/>
-        </>
+        </div>
     )
 }
 
