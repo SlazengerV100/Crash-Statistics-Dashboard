@@ -138,6 +138,37 @@ export const initMap = async (container, year, setYear, availableYears) => {
       'circle-stroke-color': '#fff'
     }
   });
+
+  // Initialize a single popup instance
+  const popup = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false
+  });
+
+  // Handle hover for unclustered crash points
+  map.on('mouseenter', 'crash-unclustered-point', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const props = e.features[0].properties;
+
+    const tooltipHTML = `
+      <div style="font-size: 13px;">
+        <strong>Crash Details</strong><br/>
+        <strong>Crash_id:</strong> ${props.crash_id || 'N/A'}<br/>
+        <strong>Severity:</strong> ${props.severity || 'N/A'}<br/>
+      </div>
+    `;
+
+    popup.setLngLat(coordinates)
+        .setHTML(tooltipHTML)
+        .addTo(map);
+  });
+
+  map.on('mouseleave', 'crash-unclustered-point', () => {
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+  });
   
   // Add the clustered points layer
   map.addLayer({
