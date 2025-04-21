@@ -117,9 +117,10 @@ export const initMap = async (container, year, setYear, availableYears) => {
         0.55, 'rgb(239,138,98)',            // Salmon
         0.70, 'rgb(214,96,77)',             // Warm red-orange
         0.85, 'rgb(178,24,43)',             // Deep red
+        1.00, 'rgb(128,0,38)'               // Dark red
       ],
       // Smaller radius = more pinpointed data = less glowing blobs
-      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 5, 10, 8, 15, 30],
+      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 4, 10, 8, 15, 20],
       // Keep opacity subtle
       'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 5, 1, 7, 0.8, 10, 0.6, 12, 0.2, 15, 0],
     }
@@ -184,14 +185,16 @@ export const initMap = async (container, year, setYear, availableYears) => {
         ['get', 'point_count'],
         'rgb(103,169,207)', 5,
         'rgb(239,138,98)', 10,
-        'rgb(178, 24, 43)',
+        'rgb(178, 24, 43)', 20,
+        'rgb(128,0,38)',
       ],
       'circle-radius': [
         'step',
         ['get', 'point_count'],
-        10, 5,
-        15, 20,
-        20
+        8, 5,
+        12, 10,
+        16, 20,
+        20, 
       ]
     }
   });
