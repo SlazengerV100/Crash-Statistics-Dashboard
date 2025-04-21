@@ -21,7 +21,7 @@ export const heatmapLegend = (map) => {
     // Create the color gradient for the legend
     const gradientContainer = document.createElement('div');
     gradientContainer.style.height = '20px';
-    gradientContainer.style.background = 'linear-gradient(to right, rgba(33,102,172,0) 0%, rgb(103,169,207) 30%, rgb(209,229,240) 50%, rgb(253,219,199) 70%, rgb(239,138,98) 90%, rgb(178,24,43) 100%)';
+    gradientContainer.style.background = 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgb(103,169,207) 10%, rgb(158,202,225) 25%, rgb(197,160,169) 40%, rgb(239,138,98) 55%, rgb(214,96,77) 70%, rgb(178,24,43) 85%, rgb(128,0,38) 100%)';
     gradientContainer.style.marginBottom = '10px';
     legendContainer.appendChild(gradientContainer);
     
