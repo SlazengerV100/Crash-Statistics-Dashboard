@@ -54,10 +54,10 @@ const FactorsPage = () => {
                     <Grid display="flex" justifyContent="center" alignItems="center">
 
                         <Box width="50%">
-                            <Sunburst data={vehicleCombos} width={windowWidth / 3} name="vehicle"/>
+                            <Sunburst data={vehicleCombos} width={windowWidth / 3} name="Vehicle"/>
                         </Box>
                         <Box width="50%">
-                            <Sunburst data={obstacleCombos} width={windowWidth / 3} name="obstacle"/>
+                            <Sunburst data={obstacleCombos} width={windowWidth / 3} name="Obstacle"/>
                         </Box>
                     </Grid>
                 )}
