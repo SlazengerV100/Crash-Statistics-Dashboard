@@ -1,8 +1,12 @@
 import * as d3 from "d3";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
+import {Grid} from "@mui/material";
 
-const Sunburst = ({data, width, name}) => {
+const Sunburst = ({ data, width, name }) => {
     const radius = width / 2
+    const [breadcrumbData, setBreadcrumbData] = useState([]);
+    const breadcrumbWidth = 150
+    const breadcrumbHeight = 30
 
     const partition = data =>
         d3.partition().size([2 * Math.PI, radius * radius])(
@@ -75,7 +79,7 @@ const Sunburst = ({data, width, name}) => {
             .attr("x", 0)
             .attr("y", 0)
             .attr("dy", "1.5em")
-            .text("of crashes involve this " + name);
+            .text("of crashes involve these " + name.toLowerCase() + "s");
 
         label
             .append("tspan")
@@ -106,6 +110,7 @@ const Sunburst = ({data, width, name}) => {
             .on("mouseleave", () => {
                 path.attr("fill-opacity", 1);
                 label.style("visibility", "hidden");
+                setBreadcrumbData([]);
                 element.value = {sequence: [], percentage: 0.0};
                 element.dispatchEvent(new CustomEvent("input"));
             })
@@ -124,12 +129,18 @@ const Sunburst = ({data, width, name}) => {
                     .select(".percentage")
                     .text(percentage + "%");
 
-                label.select(".vehicle-name").text(
-                    sequence.map(s => s.data.name).join(" + ")
-                );
+                const colours = sequence.map(s => {
+                    const allPaths = svg.selectAll("path").nodes();
+                    const matched = allPaths.find(p => p.__data__ === s);
+                    return matched ? window.getComputedStyle(matched).fill : "#999";
+                });
 
-                element.value = { sequence, percentage };
-                element.dispatchEvent(new CustomEvent("input"));
+                console.log(colours);
+
+                setBreadcrumbData(sequence.map((node, i) => ({
+                    node,
+                    fill: colours[i]
+                })));
             });
 
         return element;
@@ -144,10 +155,56 @@ const Sunburst = ({data, width, name}) => {
         }
     }, [data]);
 
+    const renderBreadcrumbs = () => {
+        if (breadcrumbData.length === 0) return null
+        return (
+            <svg width="100%" height={breadcrumbHeight + 10}>
+                <g transform="translate(0, 5)">
+                    {breadcrumbData.map((d, i) => (
+                        <g key={i} transform={`translate(${i * (breadcrumbWidth)}, 0)`}>
+                            <polygon
+                                points={breadcrumbPoints(d.node, i)}
+                                fill={d.fill}
+                            />
+                            <text
+                                x={(breadcrumbWidth + 10) / 2}
+                                y={breadcrumbHeight / 2}
+                                dy="0.35em"
+                                textAnchor="middle"
+                                fill="white"
+                            >
+                                {d.node.data.name}
+                            </text>
+                        </g>
+                    ))}
+                </g>
+            </svg>
+        )
+    };
+
+    function breadcrumbPoints(d, i) {
+        const tipWidth = 10;
+        const points = [
+            "0,0",
+            `${breadcrumbWidth},0`,
+            `${breadcrumbWidth + tipWidth},${breadcrumbHeight / 2}`,
+            `${breadcrumbWidth},${breadcrumbHeight}`,
+            `0,${breadcrumbHeight}`
+        ];
+        if (i > 0) {
+            points.push(`${tipWidth},${breadcrumbHeight / 2}`);
+        }
+        return points.join(" ");
+    }
+
     return (
-        <>
+        <div align="center">
+            <h1>{name + "s"}</h1>
+            <Grid width="100%" height={breadcrumbHeight + 10}>
+                {renderBreadcrumbs()}
+            </Grid>
             <div ref={chartRef}/>
-        </>
+        </div>
     )
 }
 
