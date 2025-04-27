@@ -67,19 +67,6 @@ const NavBar = () => {
                     <Button 
                         color="inherit" 
                         component={Link} 
-                        to="/predictor"
-                        sx={{ 
-                            backgroundColor: isActive('/predictor') ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-                            '&:hover': {
-                                backgroundColor: isActive('/predictor') ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'
-                            }
-                        }}
-                    >
-                        Predictor
-                    </Button>
-                    <Button 
-                        color="inherit" 
-                        component={Link} 
                         to="/help"
                         sx={{ 
                             backgroundColor: isActive('/help') ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
