@@ -158,7 +158,7 @@ const Sunburst = ({ data, width, name }) => {
     const renderBreadcrumbs = () => {
         if (breadcrumbData.length === 0) return null
         return (
-            <svg width="100%" height={breadcrumbHeight + 10}>
+            <svg width={breadcrumbWidth * breadcrumbData.length} height={breadcrumbHeight + 10}>
                 <g transform="translate(0, 5)">
                     {breadcrumbData.map((d, i) => (
                         <g key={i} transform={`translate(${i * (breadcrumbWidth)}, 0)`}>
@@ -198,13 +198,13 @@ const Sunburst = ({ data, width, name }) => {
     }
 
     return (
-        <div align="center">
+        <Grid align="center" justifyContent="center">
             <h1>{name + "s"}</h1>
-            <Grid width="100%" height={breadcrumbHeight + 10}>
+            <Grid height={breadcrumbHeight + 10}>
                 {renderBreadcrumbs()}
             </Grid>
             <div ref={chartRef}/>
-        </div>
+        </Grid>
     )
 }
 
