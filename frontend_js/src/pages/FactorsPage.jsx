@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Grid, Box, CircularProgress} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, IconButton, CircularProgress } from '@mui/material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import Sunburst from "../components/factors/Sunburst.jsx";
 
-const FactorsPage = () => {
+const SunburstPage = () => {
     const [vehicleCombos, setVehicleCombos] = useState([]);
     const [obstacleCombos, setObstacleCombos] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [controlOpen, setControlOpen] = useState(true);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     async function fetchVehicleData(apiEndpoint) {
         const res = await fetch(apiEndpoint);
@@ -13,8 +16,6 @@ const FactorsPage = () => {
         const data = await res.json();
         return data;
     }
-
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         const handleResize = () => setWindowWidth(window.innerWidth);
@@ -43,27 +44,43 @@ const FactorsPage = () => {
     }, []);
 
     return (
-        <Grid container justifyContent="center" className="page-content">
-            {/* Outer Grid occupying 9/12 of the width, centered */}
-            <Grid size={{xs: 9}}>
-                {loading ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" height="300px">
-                        <CircularProgress/>
-                    </Box>
-                ) : (
-                    <Grid display="flex" justifyContent="center" alignItems="center">
-
-                        <Box width="50%">
-                            <Sunburst data={vehicleCombos} width={windowWidth / 3} name="Vehicle"/>
-                        </Box>
-                        <Box width="50%">
-                            <Sunburst data={obstacleCombos} width={windowWidth / 3} name="Obstacle"/>
-                        </Box>
-                    </Grid>
-                )}
-            </Grid>
-        </Grid>
+        <Box
+            sx={{
+                display: 'flex',
+                gap: 2,
+                p: 3,
+                height: '90vh',
+                boxSizing: 'border-box',
+            }}
+        >
+            {/* Main Content Container */}
+            <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+                {/* Sunburst Charts */}
+                <Box sx={{ 
+                    flex: 1, 
+                    minWidth: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 4,
+                    backgroundColor: '#f5f5f5' // Matching the TimeSeriesPage background
+                }}>
+                    {loading ? (
+                        <CircularProgress />
+                    ) : (
+                        <>
+                            <Box width="50%">
+                                <Sunburst data={vehicleCombos} width={windowWidth / 3} name="Vehicle"/>
+                            </Box>
+                            <Box width="50%">
+                                <Sunburst data={obstacleCombos} width={windowWidth / 3} name="Obstacle"/>
+                            </Box>
+                        </>
+                    )}
+                </Box>
+            </Box>
+        </Box>
     );
 };
 
-export default FactorsPage;
+export default SunburstPage;
