@@ -199,7 +199,8 @@ const Sunburst = ({ data, width, name }) => {
 
     return (
         <Grid align="center" justifyContent="center">
-            <h1>{name + "s"}</h1>
+            <h1>{name}s</h1>
+            <p>All crashes from 2000-2025 involving {name.toLowerCase().startsWith("o") ? "an" : "a"} {name.toLowerCase()}.</p>
             <Grid height={breadcrumbHeight + 10}>
                 {renderBreadcrumbs()}
             </Grid>
