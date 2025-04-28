@@ -1,4 +1,6 @@
 # Team 3 - Assignment 1 Project
+## Video
+[Link to video](https://myvuwac-my.sharepoint.com/:v:/g/personal/kendreanth_myvuw_ac_nz/ESqa5LQBXbhLqkNQc249bM0BHkhlaXc3cG7M2qLeiV6DFg?e=Yq2SIq)
 
 ## Change Log
 - **Group Project Due:** 23:59 Friday 11 April 2025  
