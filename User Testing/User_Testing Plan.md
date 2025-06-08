@@ -101,19 +101,49 @@ Participants will complete tasks while thinking aloud. Observers will note any c
 
 ## Script (Anthony)
 
-> Thank you for joining us today. We are conducting a usability test for a dashboard we have developed to visualise vehicle crash statistics in New Zealand. It includes several interactive graphs and maps designed to help users explore crash data in different ways.
+> Thank you for joining us today. We are conducting a usability test for a dashboard we have developed to visualise vehicle crash statistics in New Zealand. It includes several interactive graphs and maps designed to help users explore crash data in different ways.  
+>  
+> The homepage visualisation is a heatmap of New Zealand displaying crashes by year, which includes a slider to change the year and a play button to animate through the years since 2000.  
+> The regional comparison visualisation can be used to interactively display crashes by region, with filters for weather conditions, vehicles involved, crash severity and more. The factors visualisation shows both the proportion of different types of vehicles and obstacles involved in crashes.  
+>  
+> The purpose of this test is to understand how users interact with the dashboard, not to test you. There are no right or wrong answers. Any feedback you give us will help improve the tool, so please express your thought process as much as you can throughout the study.  
+>  
+> You will be asked to complete a series of short tasks within our application. Once you have completed each task, we will ask you to complete a short survey about your experience during the completion of the task. The more detailed your responses are, the more we can do to improve our application, so please provide as much detail as possible.  
+> Your responses will be kept anonymous and used solely for the purposes of improving our application. In order to complete the study, we require you to fill out the Usability Test Consent Form.  
+>  
+> **If the Test Subject signs the consent form, proceed through to asking the Test Subject to complete the tasks outlined below.**
 
-> The homepage visualisation is a heatmap of New Zealand displaying crashes by year, which includes a slider to change the year and a play button to animate through the years since 2000.
+---
 
-> The regional comparison visualisation can be used to interactively display crashes by region, with filters for weather conditions, vehicles involved, crash severity and more.
+### Tasks
 
-> The factors visualisation shows both the proportion of different types of vehicles and obstacles involved in crashes.
+> **Task 1**: Navigate to a page showing crash data for Auckland, Christchurch and Wellington. Then change the filter to bike crashes for the 2009 to 2025 period.  
+> **Task 2**: Find the sunburst chart and identify the 3rd most obstacle.  
+> **Task 3**: Compare the frequency of crashes between Southland and Otago in the 2009–2014 period.  
+> **Task 4**: Find the number of crashes in the Basin Reserve in 2020.  
+> **Task 5**: Find the number of crashes in snowy conditions in New Zealand.  
+> **Task 6**: Find the number of non-injury crashes in Featherston in 2024.  
+> **Task 7**: Find what proportion of single car crashes involve a van.  
+> **Task 8**: Based on the heatmap, find the area with the highest concentration of crashes.  
+> **Task 9**: Find the number of crashes on Cable Street.
 
-> The purpose of this test is to understand how users interact with the dashboard, not to test you. There are no right or wrong answers. Any feedback you give us will help improve the tool, so please express your thought process as much as you can throughout the study.
+---
 
-> You will be asked to complete a series of short tasks within our application. Once you have completed each task, we will ask you to complete a short survey about your experience during the completion of the task.
+> Thank you for completing the tasks.
 
-> Your responses will be kept anonymous and used solely for the purposes of improving our application. To complete the study, we require you to fill out the Usability Test Consent Form.
+---
+
+### Post-Test Interview Questions
+
+> **What was your overall experience with our visualisation system?**  
+> *(Ask probing questions to get more info)*  
+>  
+> **Can you please describe 2 pain points you experienced while using the visualisation system?**  
+>  
+> **Can you please suggest 2 improvements for this visualisation system?**  
+>  
+> Thank you. We now ask you to please complete our post-test questionnaire.
+
 
 ---
 
